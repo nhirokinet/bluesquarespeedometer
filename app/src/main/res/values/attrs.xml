@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="baseTextColor" format="color" />
+    <attr name="backgroundColor" format="color" />
+    <attr name="alertBackgroundColor" format="color" />
+</resources>
