@@ -1,1 +1,1 @@
-Blue Square Speedometer
+Simple speedometer & GPS viewer
