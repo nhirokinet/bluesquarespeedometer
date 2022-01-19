@@ -1,5 +1,6 @@
-# bluesquarespeedometer
-Blue Square Speedometer
+# Blue Square Speedometer
+
+Simple speedometer & GPS viewer for Android
 
 # Releases
 Available at:
