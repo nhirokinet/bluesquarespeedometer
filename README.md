@@ -1,4 +1,4 @@
-# Blue Square Speedometer
+# <img src="./fastlane/metadata/android/en-US/images/icon.png" width="48" height="48"> Blue Square Speedometer
 
 Simple speedometer & GPS viewer for Android
 
