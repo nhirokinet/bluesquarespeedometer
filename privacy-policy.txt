@@ -1,0 +1,24 @@
+Blue Square Speedometer Privacy Policy
+
+
+1. Coverage of this Privacy Policy: This Privacy Policy covers the behavior of Blue Square Speedometer application released on the links on List 1 below by nhirokinet, as long as Blue Square Speedometer is run on Android with API that is not modified from the one documented in https://developer.android.com/. Please beware that anything outside of Blue Square Speedometer application is not covered by this Privacy Policy, including any devices, softwares, or services you use to run or download Blue Square Speedometer. If the user send the developer any information by the method out of Blue Square Speedometer, including e-mails or GitHub issues, this Privacy Policy is not applied.
+
+  List 1: Links that the Blue Square Speedometer is released under this Privacy Policy
+    - https://github.com/nhirokinet/bluesquarespeedometer/releases
+    - https://play.google.com/store/apps/details?id=net.nhiroki.bluesquarespeedometer
+    - https://f-droid.org/en/packages/net.nhiroki.bluesquarespeedometer/
+    
+    
+2. Not sending out information: Blue Square Speedometer itself does not and will not have the function to send information out of the device by app itself.
+
+
+3. The user's OS: Blue Square Speedometer makes use of the device location API. If your device is set to send an information out of the device by determining the location, it is out of the scope of this Privacy Policy. Please check the setting and privacy policy of OS.
+
+
+4. Automated backup functionality: Blue Square Speedometer does not prevent automated backup by OS, rather supports it. The user's OS may read the annotation and send out the information that Blue Square Speedometer saved in the user's device. Automated backup is basically done outside of Blue Square Speedometer, so the policies of the user's OS or any other providers may applied here, depending the user's device and OS.
+
+
+5. Warranty: Despite Blue Square Speedometer is released under this Privacy Policy, Blue Square Speedometer is released under AS-IS BASIS, and any warranties are not provided by the developers. If you find any defect that affects this Privacy Policy (or even not privacy related ones), please contact the developer.
+
+
+6. Future updates: This Privacy Policy are subject to change and you can see the latest one here. However, Blue Square Speedometer will not send out an information out of the device so even in the future Privacy Policy.
