@@ -9,6 +9,7 @@
     android:orientation="vertical"
     android:paddingVertical="3dp"
     android:background="@color/colorAccent"
+    android:keepScreenOn="true"
     >
     <TextView
         android:id="@+id/digital_meter1_textview"
