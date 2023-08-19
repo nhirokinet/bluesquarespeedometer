@@ -53,6 +53,8 @@
         \n- Android Jetpack
         \n- JetBrains Java Annotations
         \n- Kotlin Stdlib
+        \n- Coroutines support libraries for Kotlin
+        \n- kotlinx-coroutines-android
     </string>
 
     <!-- Legal English texts -->
