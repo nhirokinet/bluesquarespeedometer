@@ -29,7 +29,12 @@ def main():
             package_name = package_info[1]
             package_version = package_info[2]
 
-            if not package_fullname.startswith('androidx.') and (not (package_fullname + ':' + package_name).startswith('org.jetbrains.kotlin:kotlin-stdlib')) and (package_fullname + ':' + package_name != 'org.jetbrains:annotations'):
+            confirmed_packages = [
+                'org.jetbrains:annotations',
+                'org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm',
+                'org.jetbrains.kotlinx:kotlinx-coroutines-android',
+            ]
+            if not package_fullname.startswith('androidx.') and (not (package_fullname + ':' + package_name).startswith('org.jetbrains.kotlin:kotlin-stdlib')) and (package_fullname + ':' + package_name not in confirmed_packages):
                 print('Unknown package')
                 sys.exit(1)
 
@@ -54,7 +59,7 @@ def main():
                     assert(license_name == 'The Apache Software License, Version 2.0' or license_name == 'The Apache License, Version 2.0')
                     license_url = license_elem.find('{http://maven.apache.org/POM/4.0.0}url').text
                     print('  License URL: ' + license_url)
-                    assert(license_url == 'http://www.apache.org/licenses/LICENSE-2.0.txt')
+                    assert(license_url in ['http://www.apache.org/licenses/LICENSE-2.0.txt', 'https://www.apache.org/licenses/LICENSE-2.0.txt'])
                     ok = True
 
             if not ok:
