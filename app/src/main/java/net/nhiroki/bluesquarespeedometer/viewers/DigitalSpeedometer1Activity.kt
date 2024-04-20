@@ -54,6 +54,7 @@ class DigitalSpeedometer1Activity : AppCompatActivity() {
         super.onResume()
         findViewById<TextView>(R.id.digital_meter1_textview).setText("...")
         updateLocationProvider()
+        updateUnitText()
     }
 
     @SuppressLint("MissingPermission")
@@ -78,22 +79,43 @@ class DigitalSpeedometer1Activity : AppCompatActivity() {
     }
 
     // Confidence for each unit is on comment on MainActivity
+    private fun updateUnitText() {
+        val speedUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(MainActivity.PREFERENCE_KEY_SPEED_UNIT, MainActivity.PREFERENCE_VAL_SPEED_UNIT_DEFAULT )!!
+
+        when(speedUnit) {
+            MainActivity.PREFERENCE_VAL_SPEED_UNIT_KM_H -> {
+                findViewById<TextView>(R.id.digital_meter1_unit_textview).setText(getText(R.string.unit_km_per_hour))
+            }
+            MainActivity.PREFERENCE_VAL_SPEED_UNIT_KNOT -> {
+                findViewById<TextView>(R.id.digital_meter1_unit_textview).setText(getText(R.string.unit_knot))
+            }
+            MainActivity.PREFERENCE_VAL_SPEED_UNIT_M_S -> {
+                findViewById<TextView>(R.id.digital_meter1_unit_textview).setText(getText(R.string.unit_meter_per_second))
+            }
+            MainActivity.PREFERENCE_VAL_SPEED_UNIT_MPH -> {
+                findViewById<TextView>(R.id.digital_meter1_unit_textview).setText(getText(R.string.unit_mile_per_hour))
+            }
+        }
+    }
+
+    // Confidence for each unit is on comment on MainActivity
     private fun updateLocation(location: Location) {
         val speedUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(MainActivity.PREFERENCE_KEY_SPEED_UNIT, MainActivity.PREFERENCE_VAL_SPEED_UNIT_DEFAULT )!!
 
         when(speedUnit) {
             MainActivity.PREFERENCE_VAL_SPEED_UNIT_KM_H -> {
-                findViewById<TextView>(R.id.digital_meter1_textview).setText((location.speed * 3.6).toInt().toString() + " " + getText(R.string.unit_km_per_hour))
+                findViewById<TextView>(R.id.digital_meter1_textview).setText((location.speed * 3.6).toInt().toString())
             }
             MainActivity.PREFERENCE_VAL_SPEED_UNIT_KNOT -> {
-                findViewById<TextView>(R.id.digital_meter1_textview).setText((location.speed * 3.6 / 1.852).toInt().toString() + " " + getText(R.string.unit_knot))
+                findViewById<TextView>(R.id.digital_meter1_textview).setText((location.speed * 3.6 / 1.852).toInt().toString())
             }
             MainActivity.PREFERENCE_VAL_SPEED_UNIT_M_S -> {
-                findViewById<TextView>(R.id.digital_meter1_textview).setText((location.speed).toInt().toString() + " " + getText(R.string.unit_meter_per_second))
+                findViewById<TextView>(R.id.digital_meter1_textview).setText((location.speed).toInt().toString())
             }
             MainActivity.PREFERENCE_VAL_SPEED_UNIT_MPH -> {
-                findViewById<TextView>(R.id.digital_meter1_textview).setText((location.speed * 3.6 / 1.609344).toInt().toString() + " " + getText(R.string.unit_mile_per_hour))
+                findViewById<TextView>(R.id.digital_meter1_textview).setText((location.speed * 3.6 / 1.609344).toInt().toString())
             }
         }
+        updateUnitText()
     }
 }
