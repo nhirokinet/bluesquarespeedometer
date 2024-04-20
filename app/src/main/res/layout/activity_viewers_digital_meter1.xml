@@ -25,7 +25,7 @@
             >
             <TextView
                 android:id="@+id/digital_meter1_textview"
-                android:layout_width="224sp"
+                android:layout_width="260sp"
                 android:layout_height="wrap_content"
                 android:textSize="112sp"
                 android:textColor="?baseTextColor"
@@ -35,8 +35,8 @@
                 android:id="@+id/digital_meter1_unit_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="48sp"
-                android:paddingStart="24sp"
+                android:textSize="36sp"
+                android:paddingStart="12sp"
                 android:textColor="?baseTextColor"
                 android:gravity="bottom"
                 />
