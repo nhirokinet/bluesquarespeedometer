@@ -13,6 +13,10 @@
 /.idea/gradle.xml
 /.idea/vcs.xml
 /.idea/.name
+/.idea/deploymentTargetSelector.xml
+/.idea/kotlinc.xml
+/.idea/migrations.xml
+/.idea/other.xml
 .DS_Store
 /build
 /captures
