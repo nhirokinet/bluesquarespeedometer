@@ -1,15 +1,19 @@
 package net.nhiroki.bluesquarespeedometer
 
+import android.app.LocaleManager
+import android.os.Build
+import android.os.LocaleList
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.test.core.app.ActivityScenario
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.Locale
 import java.util.TimeZone
+
 
 @RunWith(AndroidJUnit4::class)
 class MainActivityTest {
@@ -17,11 +21,15 @@ class MainActivityTest {
     fun setUp() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
 
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
-        // TODO: this code should guarantee that the language is set to English
-        // val config = Configuration()
-        // config.setLocale(Locale("en", "US"))
-        // context.resources.updateConfiguration(config, context.resources.displayMetrics)
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Tokyo"))
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            context.getSystemService(LocaleManager::class.java).applicationLocales =
+                LocaleList(Locale("en", "US"))
+        } else {
+            AppCompatDelegate.setApplicationLocales(LocaleListCompat.create(Locale("en", "US")))
+        }
+        Locale.setDefault(Locale("en", "US"))
     }
 
     @Test
