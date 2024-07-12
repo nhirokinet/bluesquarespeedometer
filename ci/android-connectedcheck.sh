@@ -2,10 +2,13 @@
 
 # x86 image is not provided for 30 or later, but at least on my end x86_64 image could not run on emulator command
 # Minimum supported version: SDK15
+# In current code, non-English test runs on SDK >=24
 
-for sdkver in 29 15
+sdkmanager emulator
+
+for sdkver in 29 24 15
 do
-    sdkmanager platform-tools emulator "system-images;android-$sdkver;default;x86"
+    sdkmanager "system-images;android-$sdkver;default;x86"
     echo no | avdmanager create avd -f -n vm$sdkver -k "system-images;android-$sdkver;default;x86"
     ${ANDROID_HOME}/emulator/emulator -avd vm$sdkver -no-window -no-audio &
     EMULATOR_PID=$!
@@ -22,4 +25,5 @@ do
     kill $EMULATOR_PID
     while test -e /proc/$EMULATOR_PID; do sleep 1; done
     avdmanager delete avd -n vm$sdkver
+    sdkmanager --uninstall "system-images;android-$sdkver;default;x86"
 done
