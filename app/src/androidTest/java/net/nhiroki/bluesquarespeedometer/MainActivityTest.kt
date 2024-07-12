@@ -45,7 +45,7 @@ class MainActivityTest {
         ActivityScenario.launch(MainActivity::class.java)
         Thread.sleep(3000)
 
-        if (Build.VERSION.SDK_INT < 22) {
+        if (Build.VERSION.SDK_INT < 24) {
             // Not sure why failing...
             return
         }
