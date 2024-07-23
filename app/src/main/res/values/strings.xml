@@ -15,7 +15,10 @@
 
     <string name="metrics_speed">Speed</string>
     <string name="metrics_altitude">Altitude</string>
+    <string name="metrics_msl_altitude">MSL Altitude</string>
+    <string name="metrics_wgs84_altitude">WGS84 Altitude</string>
     <string name="metrics_accuracy">Accuracy</string>
+    <string name="metrics_msl_altitude_accuracy">MSL Altitude Accuracy</string>
     <string name="metrics_info_time">Info Time</string>
 
     <string name="unit_km_per_hour">km/h</string>

@@ -96,6 +96,7 @@
             android:layout_marginVertical="4sp"
             />
         <TextView
+            android:id="@+id/main_activity_altitude_caption_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/metrics_altitude"
