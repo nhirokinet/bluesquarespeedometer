@@ -10,6 +10,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.location.altitude.AltitudeConverter
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -20,6 +21,7 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import net.nhiroki.bluesquarespeedometer.viewers.DigitalSpeedometer1Activity
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -350,26 +352,76 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        if (Build.VERSION.SDK_INT >= 34 && !location.hasMslAltitude()) {
+            // There are both cases that msl altitude is automatically added and not
+            try {
+                AltitudeConverter().addMslAltitudeToLocation(this, location)
+            } catch (e:IllegalArgumentException) {
+                // ignore, just continue without MSL altitude
+                // There is a documented case
+            } catch (e:IOException) {
+                // IOException is also documented
+            }
+        }
+
         val altitudeUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_KEY_ALTTIUDE_UNIT, PREFERENCE_VAL_ALTITUDE_DEFAULT)!!
+        var altitudeMeterToShow:Double
+        if (Build.VERSION.SDK_INT >= 34 && location.hasMslAltitude()) {
+            altitudeMeterToShow = location.mslAltitudeMeters
+            findViewById<TextView>(R.id.main_activity_altitude_caption_textview).setText(R.string.metrics_msl_altitude)
+        } else {
+            // This case the height is WGS84 based
+            // https://developer.android.com/reference/android/location/Location#getAltitude()
+            altitudeMeterToShow = location.altitude
+            findViewById<TextView>(R.id.main_activity_altitude_caption_textview).setText(R.string.metrics_wgs84_altitude)
+        }
         when(altitudeUnit) {
             PREFERENCE_VAL_ALTITUDE_METERS -> {
-                findViewById<TextView>(R.id.main_activity_altitude_digits_textview).setText(location.altitude.toInt().toString())
+                findViewById<TextView>(R.id.main_activity_altitude_digits_textview).setText(altitudeMeterToShow.toInt().toString())
                 findViewById<TextView>(R.id.main_activity_altitude_unit_textview).setText(R.string.unit_meters)
             }
             PREFERENCE_VAL_ALTITUDE_FEET -> {
-                findViewById<TextView>(R.id.main_activity_altitude_digits_textview).setText((location.altitude / 0.3048).toInt().toString())
+                findViewById<TextView>(R.id.main_activity_altitude_digits_textview).setText((altitudeMeterToShow / 0.3048).toInt().toString())
                 findViewById<TextView>(R.id.main_activity_altitude_unit_textview).setText(R.string.unit_feet)
             }
         }
 
-        findViewById<TextView>(R.id.main_activity_current_coordinate_textview).setText(degreeToDisplayText(location.longitude, getText(R.string.coordinate_display_east).toString(), getText(R.string.coordinate_display_west).toString()) + " " +
-                                                                                       degreeToDisplayText(location.latitude, getText(R.string.coordinate_display_north).toString(), getText(R.string.coordinate_display_south).toString()))
+        var currentCordinateText:String = ""
+        currentCordinateText += (degreeToDisplayText(location.longitude, getText(R.string.coordinate_display_east).toString(), getText(R.string.coordinate_display_west).toString()) + " " +
+                degreeToDisplayText(location.latitude, getText(R.string.coordinate_display_north).toString(), getText(R.string.coordinate_display_south).toString()))
+        if (Build.VERSION.SDK_INT >= 34 && location.hasMslAltitude()) {
+            // Here also adds WGS84 altitude
+            // https://developer.android.com/reference/android/location/Location#getAltitude()
+            currentCordinateText += "\n" + getText(R.string.metrics_wgs84_altitude) + ": "
+            when(altitudeUnit) {
+                PREFERENCE_VAL_ALTITUDE_METERS -> {
+                    currentCordinateText += location.altitude.toInt().toString() + " " + getText(R.string.unit_meters)
+                }
+                PREFERENCE_VAL_ALTITUDE_FEET -> {
+                    currentCordinateText += ((location.altitude / 0.3048).toInt().toString()) + " " + getText(R.string.unit_feet)
+                }
+            }
+        }
+        findViewById<TextView>(R.id.main_activity_current_coordinate_textview).setText(currentCordinateText)
 
-        findViewById<TextView>(R.id.main_activity_geolocation_detail_textview).setText(
-            location.provider + "\n" +
-            getText(R.string.metrics_accuracy) + ": " + location.accuracy.toString() + " " + getText(R.string.unit_meters) +  "\n" +
-            getText(R.string.metrics_info_time) + ": " + SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date(location.time))
-        )
+        var geolocationDetailText = ""
+        geolocationDetailText += location.provider + "\n";
+        geolocationDetailText += getText(R.string.metrics_accuracy).toString() + ": " + String.format("%.1f", location.accuracy) + " " + getText(R.string.unit_meters) +  "\n"
+        if (Build.VERSION.SDK_INT >= 34 && location.hasMslAltitude()) {
+            geolocationDetailText += getText(R.string.metrics_msl_altitude_accuracy).toString() + ": "
+            when(altitudeUnit) {
+                PREFERENCE_VAL_ALTITUDE_METERS -> {
+                    geolocationDetailText += (location.mslAltitudeAccuracyMeters + 0.5).toInt().toString() + " " + getText(R.string.unit_meters)
+                }
+                PREFERENCE_VAL_ALTITUDE_FEET -> {
+                    geolocationDetailText += ((location.mslAltitudeAccuracyMeters / 0.3048 + 0.5).toInt().toString()) + " " + getText(R.string.unit_feet)
+                }
+            }
+            geolocationDetailText += "\n"
+        }
+        geolocationDetailText += getText(R.string.metrics_info_time).toString() + ": " + SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date(location.time))
+
+        findViewById<TextView>(R.id.main_activity_geolocation_detail_textview).setText(geolocationDetailText)
 
         findViewById<View>(R.id.main_activity_location_not_enabled).visibility = View.GONE
         findViewById<View>(R.id.main_activity_links_to_direct_meters).visibility = View.VISIBLE

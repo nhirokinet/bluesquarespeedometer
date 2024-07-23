@@ -15,7 +15,10 @@
 
     <string name="metrics_speed">速度</string>
     <string name="metrics_altitude">高度</string>
+    <string name="metrics_msl_altitude">海面高度</string>
+    <string name="metrics_wgs84_altitude">WGS84 高度</string>
     <string name="metrics_accuracy">精度</string>
+    <string name="metrics_msl_altitude_accuracy">海面高度精度</string>
     <string name="metrics_info_time">時刻情報</string>
 
     <string name="unit_km_per_hour">km/h</string>
