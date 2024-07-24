@@ -45,10 +45,9 @@ class MainActivityTest {
         ActivityScenario.launch(MainActivity::class.java)
         Thread.sleep(3000)
 
-        if (Build.VERSION.SDK_INT < 24) {
-            // Not sure why failing...
-            return
-        }
+        // Not sure why failing...
+        Assume.assumeTrue(Build.VERSION.SDK_INT >= 24) 
+
         Espresso.onView(ViewMatchers.withText("Speed"))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
