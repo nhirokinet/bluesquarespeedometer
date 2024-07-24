@@ -10,8 +10,8 @@ android {
     namespace "net.nhiroki.bluesquarespeedometer"
     defaultConfig {
         applicationId "net.nhiroki.bluesquarespeedometer"
-        versionName "0.1.4"
-        versionCode 5
+        versionName "0.1.5"
+        versionCode 6
 
         minSdk 15
         targetSdk 34
