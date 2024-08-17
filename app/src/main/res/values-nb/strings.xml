@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">Blue Square Speedometer</string>
+
+    <string name="permission_location_no">Ingen posisjonstillatelse gitt</string>
+    <string name="permission_location_coarse">Kun omtrentlig posisjonstillatelse gitt</string>
+    <string name="permission_location_fine">Nøyaktig posisjonstillatelse gitt</string>
+    <string name="permission_location_grant_prompt">Gi posisjonstillatelse</string>
+    <string name="permission_location_description">Denne appen er et speedometer basert på enhetens posisjonstjeneste, så nøyaktig posisjonstillatelse er nødvendig.</string>
+
+    <string name="error_soft_location_not_enabled">Posisjonssystem er ikke aktivert nå.</string>
+    <string name="error_soft_location_provider_not_enabled">Posisjonstjeneste \"%1$s\" er ikke aktivert nå.</string>
+
+    <string name="menu_this_app_digital_speedometer_fullscreen">Digitalt Speedometer (fullskjerm)</string>
+    <string name="menu_this_app_licensing_information">Lisensinformasjon</string>
+
+    <string name="metrics_speed">Hastighet</string>
+    <string name="metrics_altitude">Høyde</string>
+    <string name="metrics_msl_altitude">Høyde (moh.)</string>
+    <string name="metrics_wgs84_altitude">Høyde (WGS84)</string>
+    <string name="metrics_accuracy">Nøyaktighet</string>
+    <string name="metrics_msl_altitude_accuracy">Høydenøyaktighet (moh.)</string>
+    <string name="metrics_info_time">Tid</string>
+
+    <string name="unit_km_per_hour">km/t</string>
+    <string name="unit_knot">kn</string>
+    <string name="unit_meter_per_second">m/s</string>
+    <string name="unit_mile_per_hour">mph</string>
+    <string name="unit_meters">m</string>
+    <string name="unit_feet">ft</string>
+    <string name="unit_angle_deg">%1$d°%2$02d\'%3$02d.%4$01d\"</string>
+
+    <string name="dialog_select_location_provider">Velg posisjonstjeneste</string>
+    <string name="dialog_select_speed_unit">Velg hastighetsenhet</string>
+    <string name="dialog_select_altitude_unit">Velg høydeenhet</string>
+
+    <string name="config_location_provider">Posisjonstjeneste</string>
+    <string name="config_speed_unit">Hastighetsenhet</string>
+    <string name="config_altitude_unit">Høydeenhet</string>
+
+    <string name="coordinate_display_north">N</string>
+    <string name="coordinate_display_south">S</string>
+    <string name="coordinate_display_east">Ø</string>
+    <string name="coordinate_display_west">V</string>
+
+    <string name="general_caption_unset">(Ikke satt)</string>
+    <string name="general_button_change">Endre</string>
+    <string name="general_button_retry">Prøv igjen</string>
+</resources>
