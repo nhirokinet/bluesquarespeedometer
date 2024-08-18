@@ -27,7 +27,7 @@
     <string name="unit_mile_per_hour">mph</string>
     <string name="unit_meters">m</string>
     <string name="unit_feet">ft</string>
-    <string name="unit_angle_deg">%1$d°%2$02d\'%3$02d.%4$01d\"</string>
+    <string name="unit_angle_deg">%1$d°%2$02d\'%3$02d,%4$01d\"</string>
 
     <string name="dialog_select_location_provider">Velg posisjonstjeneste</string>
     <string name="dialog_select_speed_unit">Velg hastighetsenhet</string>
