@@ -4,8 +4,8 @@ plugins {
 }
 
 android {
-    compileSdk 34
-    buildToolsVersion '34.0.0'
+    compileSdk 35
+    buildToolsVersion = '35.0.0'
 
     namespace "net.nhiroki.bluesquarespeedometer"
     defaultConfig {
@@ -14,7 +14,7 @@ android {
         versionCode 7
 
         minSdk 15
-        targetSdk 34
+        targetSdk 35
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
