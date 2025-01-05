@@ -32,6 +32,7 @@ jobs:
           api-level: ${{ matrix.api-level }}
           arch: x86_64
           script: ./gradlew connectedCheck
+
   test_legacy:
     name: Android connectedCheck x86
     runs-on: ubuntu-latest
