@@ -3,7 +3,7 @@
 # Minimum supported version: SDK15
 # In current code, non-English test runs on SDK >=24
 
-for sdkver in 35 24
+for sdkver in 35
 do
     sdkmanager "system-images;android-$sdkver;default;x86_64"
     echo no | avdmanager create avd -f -n vm$sdkver -k "system-images;android-$sdkver;default;x86_64"
@@ -25,9 +25,10 @@ do
     kill $EMULATOR_PID
     while test -e /proc/$EMULATOR_PID; do sleep 1; done
     avdmanager delete avd -n vm$sdkver
+    sdkmanager --uninstall "system-images;android-$sdkver;default;x86_64"
 done
 
-for sdkver in 15
+for sdkver in 24 15
 do
     sdkmanager "system-images;android-$sdkver;default;x86"
     echo no | avdmanager create avd -f -n vm$sdkver -k "system-images;android-$sdkver;default;x86"
