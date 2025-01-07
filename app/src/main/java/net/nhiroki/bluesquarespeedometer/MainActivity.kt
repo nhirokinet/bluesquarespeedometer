@@ -323,8 +323,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun formatDistance(distance: Double): String {
         return when {
-            distance >= 1000 -> String.format("%.1f", distance)  // For 1000+, show 1 decimal
-            else -> String.format("%.4f", distance)              // For <1000, show 4 decimals
+            distance >= 1000 -> String.format("%.1f", distance)
+            distance >= 100 -> String.format("%.2f", distance)
+            distance >= 10 -> String.format("%.3f", distance)
+            else -> String.format("%.4f", distance)
         }
     }
 
