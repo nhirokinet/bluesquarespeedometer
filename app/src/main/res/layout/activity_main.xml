@@ -96,6 +96,39 @@
             android:layout_marginVertical="4sp"
             />
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/metrics_total_distance"
+            />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="bottom|end"
+            >
+            <TextView
+                android:id="@+id/main_activity_total_distance_digits_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="60sp"
+                android:textColor="?baseTextColor"
+                android:fontFamily="monospace"
+                android:paddingEnd="30sp"
+                />
+            <TextView
+                android:id="@+id/main_activity_total_distance_units_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/colorAccent"
+            android:layout_marginVertical="4sp"
+            />
+        <TextView
             android:id="@+id/main_activity_altitude_caption_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
