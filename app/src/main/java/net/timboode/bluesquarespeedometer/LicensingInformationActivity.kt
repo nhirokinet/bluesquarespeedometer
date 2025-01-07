@@ -1,4 +1,4 @@
-package net.nhiroki.bluesquarespeedometer
+package net.timboode.bluesquarespeedometer
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -208,6 +208,23 @@ class LicensingInformationActivity : AppCompatActivity() {
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+   
+   
+   ------------------------------------------------------------------------
+   NOTICE OF FORK
+   
+   This application is based on the application with the name 
+   BlueSquareSpeedometer developed and published by nhikoret under the 
+   apache 2.0 license listed above with url 
+   https://github.com/nhirokinet/bluesquarespeedometer
+   
+   This fork adds color-coding for speeds, total distance travelled
+   tracking, and configurable warnings on when to go fill up on gas.
+   
+   This fork renames BlueSquare Speedometer to Stateful Speedometer.
+   
+   All work done for the original BlueSquare Speedometer app belongs to
+   nhikoret and all other contributors to his code repository.
 """
 
     override fun onCreate(savedInstanceState: Bundle?) {

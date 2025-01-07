@@ -1,4 +1,4 @@
-package net.nhiroki.bluesquarespeedometer.viewers
+package net.timboode.bluesquarespeedometer.viewers
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,10 +10,10 @@ import android.preference.PreferenceManager
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import net.nhiroki.bluesquarespeedometer.MainActivity
-import net.nhiroki.bluesquarespeedometer.MainActivity.Companion.KEY_TOTAL_DISTANCE
-import net.nhiroki.bluesquarespeedometer.R
-import net.nhiroki.bluesquarespeedometer.services.SpeedColorService
+import net.timboode.bluesquarespeedometer.MainActivity
+import net.timboode.bluesquarespeedometer.MainActivity.Companion.KEY_TOTAL_DISTANCE
+import net.timboode.bluesquarespeedometer.R
+import net.timboode.bluesquarespeedometer.services.SpeedColorService
 
 class DigitalSpeedometer1Activity : AppCompatActivity() {
     var _locationManager: LocationManager? = null

@@ -1,4 +1,4 @@
-package net.nhiroki.bluesquarespeedometer.services
+package net.timboode.bluesquarespeedometer.services
 
 import android.graphics.Color
 

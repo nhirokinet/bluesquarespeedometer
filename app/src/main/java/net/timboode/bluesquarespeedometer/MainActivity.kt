@@ -1,4 +1,4 @@
-package net.nhiroki.bluesquarespeedometer
+package net.timboode.bluesquarespeedometer
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -20,8 +20,8 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
-import net.nhiroki.bluesquarespeedometer.services.SpeedColorService
-import net.nhiroki.bluesquarespeedometer.viewers.DigitalSpeedometer1Activity
+import net.timboode.bluesquarespeedometer.services.SpeedColorService
+import net.timboode.bluesquarespeedometer.viewers.DigitalSpeedometer1Activity
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date

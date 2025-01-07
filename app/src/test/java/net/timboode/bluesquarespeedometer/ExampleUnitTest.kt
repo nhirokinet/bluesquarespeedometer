@@ -1,4 +1,4 @@
-package net.nhiroki.bluesquarespeedometer
+package net.timboode.bluesquarespeedometer
 
 import org.junit.Test
 

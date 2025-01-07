@@ -1,4 +1,4 @@
-package net.nhiroki.bluesquarespeedometer
+package net.timboode.bluesquarespeedometer
 
 import android.app.LocaleManager
 import android.content.Context
