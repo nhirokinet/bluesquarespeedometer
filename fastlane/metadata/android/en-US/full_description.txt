@@ -1,3 +1,3 @@
-Displays speed, altitude and current coordinates using device location provider.
+Displays speed, altitude and current coordinates using device location provider. Also tracks total distance travelled and distance since last gas refill. Distance since last oil change is an upcoming change.
 
-Blue Square Speedometer does not have network connection privilege, and does not have function to send information out of the device. Note that the information sent out by location provider itself of the device depends on OS setting.
+Stateful Speedometer does not have network connection privilege, and does not have function to send information out of the device. Note that the information sent out by location provider itself of the device depends on OS setting.

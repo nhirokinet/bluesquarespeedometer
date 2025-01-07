@@ -1,1 +1,1 @@
-Simple speedometer & GPS viewer
+Stateful speedometer & GPS viewer

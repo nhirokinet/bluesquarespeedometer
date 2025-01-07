@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Blue Square Speedometer</string>
+    <string name="app_name">Stateful Speedometer</string>
 
     <string name="permission_location_no">Ingen posisjonstillatelse gitt</string>
     <string name="permission_location_coarse">Kun omtrentlig posisjonstillatelse gitt</string>
@@ -48,4 +48,7 @@
     <string name="general_button_retry">Prøv igjen</string>
     <string name="unit_kilometres">km</string>
     <string name="unit_miles">mil</string>
+    <string name="config_distance_before_gas_warning">Gassadvarselsavstand</string>
+    <string name="general_button_reset">Nullstill</string>
+    <string name="metrics_distance_since_gas_refill">Distanse siden siste gassfylling</string>
 </resources>

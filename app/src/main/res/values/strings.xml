@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Blue Square Speedometer</string>
+    <string name="app_name">Stateful Speedometer</string>
 
     <string name="permission_location_no">No Location Permission Granted</string>
     <string name="permission_location_coarse">Only Coarse Location Granted</string>
@@ -65,4 +65,7 @@
     <string name="license_apache_license_v2.0_name" translatable="false">Apache License, Version 2.0</string>
     <string name="unit_kilometres">km</string>
     <string name="unit_miles">miles</string>
+    <string name="config_distance_before_gas_warning">Gas warning distance</string>
+    <string name="general_button_reset">Reset</string>
+    <string name="metrics_distance_since_gas_refill">Distance since last gas refill</string>
 </resources>

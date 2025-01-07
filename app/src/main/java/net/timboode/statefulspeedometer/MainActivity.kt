@@ -1,4 +1,4 @@
-package net.timboode.bluesquarespeedometer
+package net.timboode.statefulspeedometer
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -15,13 +15,15 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.text.InputType
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
-import net.timboode.bluesquarespeedometer.services.SpeedColorService
-import net.timboode.bluesquarespeedometer.viewers.DigitalSpeedometer1Activity
+import net.timboode.statefulspeedometer.services.SpeedColorService
+import net.timboode.statefulspeedometer.viewers.DigitalSpeedometer1Activity
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -44,6 +46,8 @@ class MainActivity : AppCompatActivity() {
         const val PREFERENCE_VAL_ALTITUDE_FEET:Int = 1
 
         const val KEY_TOTAL_DISTANCE:String = "total_distance"
+        const val KEY_GAS_WARNING_DISTANCE:String = "gas_warning_distance"
+        const val KEY_CURRENT_GAS_DISTANCE:String = "current_gas_distance"
     }
 
     class MyLocationListener : LocationListener {
@@ -69,7 +73,12 @@ class MainActivity : AppCompatActivity() {
 
     var totalDistanceInMetres: Double = 0.0
         private set
-        get
+
+    var gasWarningDistanceInMetres: Double = 0.0
+        private set
+
+    var currentGasDistanceInMetres: Double = 0.0
+        private set
 
     var lastLocation: Location? = null
         private set
@@ -112,10 +121,27 @@ class MainActivity : AppCompatActivity() {
         this.findViewById<Button>(R.id.main_activity_refresh_location_provider_button).setOnClickListener {
             updateLocationProvider()
         }
-
-        findViewById<TextView>(R.id.main_activity_version_info_footer).setText(getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME)
+        this.findViewById<Button>(R.id.main_activity_gas_warning_distance_button).setOnClickListener {
+            updateGasWarningDistance()
+        }
+        this.findViewById<Button>(R.id.main_activity_gas_warning_reset_button).setOnClickListener {
+            resetGasDistance()
+        }
 
         totalDistanceInMetres = PreferenceManager.getDefaultSharedPreferences(this).getFloat(KEY_TOTAL_DISTANCE, 0f).toDouble()
+        gasWarningDistanceInMetres = PreferenceManager.getDefaultSharedPreferences(this).getFloat(KEY_GAS_WARNING_DISTANCE, 50f).toDouble()
+        currentGasDistanceInMetres = PreferenceManager.getDefaultSharedPreferences(this).getFloat(KEY_CURRENT_GAS_DISTANCE, 0f).toDouble()
+
+        val speedUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_KEY_SPEED_UNIT, PREFERENCE_VAL_SPEED_UNIT_DEFAULT)!!
+        findViewById<TextView>(R.id.main_activity_version_info_footer).setText(getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME)
+        findViewById<TextView>(R.id.main_activity_config_gas_warning_distance_textview).setText("" + formatDistance(gasWarningDistanceInMetres / getUnitMultiplier(speedUnit)) + " " + toDistanceUnitString(speedUnit))
+    }
+
+    private fun resetGasDistance() {
+        currentGasDistanceInMetres = 0.0
+        PreferenceManager.getDefaultSharedPreferences(this).edit()
+            .putFloat(KEY_CURRENT_GAS_DISTANCE, currentGasDistanceInMetres.toFloat())
+            .apply()
     }
 
     override fun onResume() {
@@ -143,6 +169,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         totalDistanceInMetres = PreferenceManager.getDefaultSharedPreferences(this).getFloat(KEY_TOTAL_DISTANCE, 0f).toDouble()
+        gasWarningDistanceInMetres = PreferenceManager.getDefaultSharedPreferences(this).getFloat(KEY_GAS_WARNING_DISTANCE, 50f).toDouble()
+        currentGasDistanceInMetres = PreferenceManager.getDefaultSharedPreferences(this).getFloat(KEY_CURRENT_GAS_DISTANCE, 0f).toDouble()
     }
 
     override fun onStop() {
@@ -239,17 +267,48 @@ class MainActivity : AppCompatActivity() {
         }).create().show()
     }
 
+    private fun updateGasWarningDistance() {
+        val speedUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_KEY_SPEED_UNIT, PREFERENCE_VAL_SPEED_UNIT_DEFAULT)!!
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Enter distance in " + toDistanceUnitString(speedUnit) + " before refill gas warning")
+
+        val input = EditText(this)
+        input.inputType = InputType.TYPE_CLASS_NUMBER
+        builder.setView(input)
+
+        builder.setPositiveButton("OK") { dialog, _ ->
+            val number = input.text.toString().toIntOrNull()
+            if (number != null) {
+                gasWarningDistanceInMetres = number.toDouble() * (
+                        when(speedUnit) {
+                                PREFERENCE_VAL_SPEED_UNIT_KM_H -> 1000.0
+                                PREFERENCE_VAL_SPEED_UNIT_KNOT -> 1000.0
+                                PREFERENCE_VAL_SPEED_UNIT_M_S -> 1000.0
+                                PREFERENCE_VAL_SPEED_UNIT_MPH -> 1609.344
+                                else -> 1000.0
+                            }
+                        )
+                PreferenceManager.getDefaultSharedPreferences(this).edit()
+                    .putFloat(KEY_GAS_WARNING_DISTANCE, gasWarningDistanceInMetres.toFloat())
+                    .apply()
+
+                findViewById<TextView>(R.id.main_activity_config_gas_warning_distance_textview).setText("" + formatDistance(gasWarningDistanceInMetres / getUnitMultiplier(speedUnit)) + " " + toDistanceUnitString(speedUnit))
+            }
+        }
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.cancel()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
+
     private fun changeSpeedUnitButtonClicked() {
         val currentSpeedUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_KEY_SPEED_UNIT, PREFERENCE_VAL_SPEED_UNIT_DEFAULT)!!
 
         val candidates:Array<CharSequence> = Array(4, {
-            when(it) {
-                PREFERENCE_VAL_SPEED_UNIT_KM_H -> getText(R.string.unit_km_per_hour)
-                PREFERENCE_VAL_SPEED_UNIT_KNOT -> getText(R.string.unit_knot)
-                PREFERENCE_VAL_SPEED_UNIT_M_S -> getText(R.string.unit_meter_per_second)
-                PREFERENCE_VAL_SPEED_UNIT_MPH -> getText(R.string.unit_mile_per_hour)
-                else -> ""
-            }
+            toSpeedUnitString(it)
         })
         AlertDialog.Builder(this).setTitle(R.string.dialog_select_speed_unit).setSingleChoiceItems(candidates, currentSpeedUnit, DialogInterface.OnClickListener {
                 dialog, which ->
@@ -260,6 +319,30 @@ class MainActivity : AppCompatActivity() {
             dialog.cancel()
             this.updateOptionsShown()
         }).create().show()
+    }
+
+    private fun toSpeedUnitString(unit: Int) = when (unit) {
+        PREFERENCE_VAL_SPEED_UNIT_KM_H -> getText(R.string.unit_km_per_hour)
+        PREFERENCE_VAL_SPEED_UNIT_KNOT -> getText(R.string.unit_knot)
+        PREFERENCE_VAL_SPEED_UNIT_M_S -> getText(R.string.unit_meter_per_second)
+        PREFERENCE_VAL_SPEED_UNIT_MPH -> getText(R.string.unit_mile_per_hour)
+        else -> ""
+    }
+
+    private fun toDistanceUnitString(unit: Int) = when (unit) {
+        PREFERENCE_VAL_SPEED_UNIT_KM_H -> getText(R.string.unit_kilometres)
+        PREFERENCE_VAL_SPEED_UNIT_KNOT -> getText(R.string.unit_kilometres)
+        PREFERENCE_VAL_SPEED_UNIT_M_S -> getText(R.string.unit_kilometres)
+        PREFERENCE_VAL_SPEED_UNIT_MPH -> getText(R.string.unit_miles)
+        else -> ""
+    }
+
+    private fun getUnitMultiplier(speedUnit: Int): Double = when (speedUnit) {
+        PREFERENCE_VAL_SPEED_UNIT_KM_H -> 1000.0
+        PREFERENCE_VAL_SPEED_UNIT_KNOT -> 1000.0
+        PREFERENCE_VAL_SPEED_UNIT_M_S -> 1000.0
+        PREFERENCE_VAL_SPEED_UNIT_MPH -> 1609.344
+        else -> 1000.0
     }
 
     private fun changeAltitudeUnitButtonClicked() {
@@ -310,6 +393,7 @@ class MainActivity : AppCompatActivity() {
     fun setLocation(location: Location) {
         if (lastLocation != null) {
             totalDistanceInMetres += location.distanceTo(lastLocation!!)
+            currentGasDistanceInMetres += location.distanceTo(lastLocation!!)
         }
         lastLocation = location
 
@@ -317,6 +401,9 @@ class MainActivity : AppCompatActivity() {
             updateCount = 0
             PreferenceManager.getDefaultSharedPreferences(this).edit()
                 .putFloat(KEY_TOTAL_DISTANCE, totalDistanceInMetres.toFloat())
+                .apply()
+            PreferenceManager.getDefaultSharedPreferences(this).edit()
+                .putFloat(KEY_CURRENT_GAS_DISTANCE, currentGasDistanceInMetres.toFloat())
                 .apply()
         }
     }
@@ -381,6 +468,7 @@ class MainActivity : AppCompatActivity() {
         var speedDigitsView = findViewById<TextView>(R.id.main_activity_speed_digits_textview)
         var distanceDigitsView = findViewById<TextView>(R.id.main_activity_total_distance_digits_textview)
         var distanceUnitsView = findViewById<TextView>(R.id.main_activity_total_distance_units_textview)
+        var distanceSinceGasRefillDigitsView = findViewById<TextView>(R.id.main_activity_distance_since_gas_refill_digits_textview)
 
         when(speedUnit) {
             PREFERENCE_VAL_SPEED_UNIT_KM_H -> {
@@ -390,6 +478,9 @@ class MainActivity : AppCompatActivity() {
 
                 distanceDigitsView.setText(formatDistance(this.totalDistanceInMetres / 1000.0))
                 distanceUnitsView.setText(R.string.unit_kilometres)
+
+                distanceSinceGasRefillDigitsView.setText(formatDistance(this.currentGasDistanceInMetres / 1000.0))
+                findViewById<TextView>(R.id.main_activity_distance_since_gas_refill_units_textview).setText(R.string.unit_kilometres)
             }
             PREFERENCE_VAL_SPEED_UNIT_KNOT -> {
                 speedDigitsView.setText((location.speed * 3.6 / 1.852).toInt().toString())
@@ -398,6 +489,9 @@ class MainActivity : AppCompatActivity() {
 
                 distanceDigitsView.setText(formatDistance(this.totalDistanceInMetres / 1000.0))
                 distanceUnitsView.setText(R.string.unit_kilometres)
+
+                distanceSinceGasRefillDigitsView.setText(formatDistance(this.currentGasDistanceInMetres / 1000.0))
+                findViewById<TextView>(R.id.main_activity_distance_since_gas_refill_units_textview).setText(R.string.unit_kilometres)
             }
             PREFERENCE_VAL_SPEED_UNIT_M_S -> {
                 speedDigitsView.setText((location.speed).toInt().toString())
@@ -406,6 +500,9 @@ class MainActivity : AppCompatActivity() {
 
                 distanceDigitsView.setText(formatDistance(this.totalDistanceInMetres / 1000.0))
                 distanceUnitsView.setText(R.string.unit_kilometres)
+
+                distanceSinceGasRefillDigitsView.setText(formatDistance(this.currentGasDistanceInMetres / 1000.0))
+                findViewById<TextView>(R.id.main_activity_distance_since_gas_refill_units_textview).setText(R.string.unit_kilometres)
             }
             PREFERENCE_VAL_SPEED_UNIT_MPH -> {
                 speedDigitsView.setText((location.speed * 3.6 / 1.609344).toInt().toString())
@@ -414,6 +511,9 @@ class MainActivity : AppCompatActivity() {
 
                 distanceDigitsView.setText(formatDistance(this.totalDistanceInMetres / 1609.344))
                 distanceUnitsView.setText(R.string.unit_miles)
+
+                distanceSinceGasRefillDigitsView.setText(formatDistance(this.currentGasDistanceInMetres / 1609.344))
+                findViewById<TextView>(R.id.main_activity_distance_since_gas_refill_units_textview).setText(R.string.unit_miles)
             }
         }
 

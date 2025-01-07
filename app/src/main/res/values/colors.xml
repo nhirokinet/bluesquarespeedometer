@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#303f9f</color>
 
     <color name="colorAccent">#4d68ff</color>
+    <color name="buttonResetBackgroud">#ddaaaa</color>
 </resources>

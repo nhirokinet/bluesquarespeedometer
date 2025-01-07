@@ -1,4 +1,4 @@
-package net.timboode.bluesquarespeedometer.viewers
+package net.timboode.statefulspeedometer.viewers
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,10 +10,12 @@ import android.preference.PreferenceManager
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import net.timboode.bluesquarespeedometer.MainActivity
-import net.timboode.bluesquarespeedometer.MainActivity.Companion.KEY_TOTAL_DISTANCE
-import net.timboode.bluesquarespeedometer.R
-import net.timboode.bluesquarespeedometer.services.SpeedColorService
+import net.timboode.statefulspeedometer.MainActivity
+import net.timboode.statefulspeedometer.MainActivity.Companion.KEY_CURRENT_GAS_DISTANCE
+import net.timboode.statefulspeedometer.MainActivity.Companion.KEY_GAS_WARNING_DISTANCE
+import net.timboode.statefulspeedometer.MainActivity.Companion.KEY_TOTAL_DISTANCE
+import net.timboode.statefulspeedometer.services.SpeedColorService
+import net.timboode.statefulspeedometer.R
 
 class DigitalSpeedometer1Activity : AppCompatActivity() {
     var _locationManager: LocationManager? = null
@@ -23,7 +25,12 @@ class DigitalSpeedometer1Activity : AppCompatActivity() {
 
     var totalDistanceInMetres: Double = 0.0
         private set
-        get
+
+    var gasWarningDistanceInMetres: Double = 0.0
+        private set
+
+    var currentGasDistanceInMetres: Double = 0.0
+        private set
 
     var lastLocation: Location? = null
         private set
@@ -58,6 +65,17 @@ class DigitalSpeedometer1Activity : AppCompatActivity() {
         }
 
         totalDistanceInMetres = PreferenceManager.getDefaultSharedPreferences(this).getFloat(KEY_TOTAL_DISTANCE, 0f).toDouble()
+
+        gasWarningDistanceInMetres = PreferenceManager.getDefaultSharedPreferences(this).getFloat(
+            KEY_GAS_WARNING_DISTANCE, 50f).toDouble()
+        currentGasDistanceInMetres = PreferenceManager.getDefaultSharedPreferences(this).getFloat(
+            KEY_CURRENT_GAS_DISTANCE, 0f).toDouble()
+
+        if (currentGasDistanceInMetres >= gasWarningDistanceInMetres) {
+            findViewById<View>(R.id.digital_meter1_gas_icon).visibility = View.VISIBLE
+        }
+        else
+            findViewById<View>(R.id.digital_meter1_gas_icon).visibility = View.INVISIBLE
     }
 
     override fun onStop() {
@@ -70,7 +88,15 @@ class DigitalSpeedometer1Activity : AppCompatActivity() {
         findViewById<TextView>(R.id.digital_meter1_textview).setText("...")
         updateLocationProvider()
         totalDistanceInMetres = PreferenceManager.getDefaultSharedPreferences(this).getFloat(KEY_TOTAL_DISTANCE, 0f).toDouble()
-        updateUnitText()
+        gasWarningDistanceInMetres = PreferenceManager.getDefaultSharedPreferences(this).getFloat(KEY_GAS_WARNING_DISTANCE, 50f).toDouble()
+        currentGasDistanceInMetres = PreferenceManager.getDefaultSharedPreferences(this).getFloat(KEY_CURRENT_GAS_DISTANCE, 0f).toDouble()
+        updateView()
+
+        if (currentGasDistanceInMetres >= gasWarningDistanceInMetres) {
+            findViewById<View>(R.id.digital_meter1_gas_icon).visibility = View.VISIBLE
+        }
+        else
+            findViewById<View>(R.id.digital_meter1_gas_icon).visibility = View.INVISIBLE
     }
 
     @SuppressLint("MissingPermission")
@@ -95,7 +121,7 @@ class DigitalSpeedometer1Activity : AppCompatActivity() {
     }
 
     // Confidence for each unit is on comment on MainActivity
-    private fun updateUnitText() {
+    private fun updateView() {
         val speedUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(MainActivity.PREFERENCE_KEY_SPEED_UNIT, MainActivity.PREFERENCE_VAL_SPEED_UNIT_DEFAULT )!!
 
         when(speedUnit) {
@@ -115,15 +141,25 @@ class DigitalSpeedometer1Activity : AppCompatActivity() {
     }
 
     fun setLocation(location: Location) {
+        val gasLightWasOff:Boolean = currentGasDistanceInMetres < gasWarningDistanceInMetres
+
         if (lastLocation != null) {
             totalDistanceInMetres += location.distanceTo(lastLocation!!)
+            currentGasDistanceInMetres += location.distanceTo(lastLocation!!)
+
+            if (currentGasDistanceInMetres >= gasWarningDistanceInMetres && gasLightWasOff) {
+                findViewById<View>(R.id.digital_meter1_gas_icon).visibility = View.VISIBLE
+            }
         }
         lastLocation = location
 
         if(updateCount++ % 25 == 0) {
             updateCount = 0
             PreferenceManager.getDefaultSharedPreferences(this).edit()
-                .putFloat(MainActivity.KEY_TOTAL_DISTANCE, totalDistanceInMetres.toFloat())
+                .putFloat(KEY_TOTAL_DISTANCE, totalDistanceInMetres.toFloat())
+                .apply()
+            PreferenceManager.getDefaultSharedPreferences(this).edit()
+                .putFloat(KEY_CURRENT_GAS_DISTANCE, currentGasDistanceInMetres.toFloat())
                 .apply()
         }
     }
@@ -178,6 +214,6 @@ class DigitalSpeedometer1Activity : AppCompatActivity() {
                 distanceUnitsView.setText(R.string.unit_kilometres)
             }
         }
-        updateUnitText()
+        updateView()
     }
 }

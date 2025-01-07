@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Blue Square Speedometer</string>
+    <string name="app_name">Stateful Speedometer</string>
 
     <string name="permission_location_no">位置情報権限なし</string>
     <string name="permission_location_coarse">おおよその位置情報権限</string>
@@ -48,4 +48,7 @@
     <string name="general_button_retry">再試行</string>
     <string name="unit_kilometres">km</string>
     <string name="unit_miles">マイル</string>
+    <string name="config_distance_before_gas_warning">ガス警告距離</string>
+    <string name="general_button_reset">リセット</string>
+    <string name="metrics_distance_since_gas_refill">前回給油からの距離</string>
 </resources>

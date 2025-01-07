@@ -7,10 +7,10 @@ android {
     compileSdk 35
     buildToolsVersion = '35.0.0'
 
-    namespace "net.nhiroki.bluesquarespeedometer"
+    namespace "net.timboode.statefulspeedometer"
     defaultConfig {
-        applicationId "net.nhiroki.bluesquarespeedometer"
-        versionName "0.1.7"
+        applicationId "net.timboode.statefulspeedometer"
+        versionName "0.1.0"
         versionCode 8
 
         minSdk 15

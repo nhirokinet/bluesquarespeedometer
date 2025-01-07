@@ -45,22 +45,35 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="right"
+            android:gravity="center_vertical"
             >
-
+            <ImageView
+                android:id="@+id/digital_meter1_gas_icon"
+                android:layout_width="200sp"
+                android:layout_height="200sp"
+                android:src="@drawable/gasstation"
+                android:padding="10sp"
+                android:layout_gravity="start|bottom"
+                android:visibility="invisible"
+                />
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
             <TextView
                 android:id="@+id/digital_meter1_distance_textview"
-                android:layout_width="260sp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="end"
+                android:layout_gravity="end"
                 android:textColor="#aaaaaa"
-                android:textSize="75sp" />
+                android:textSize="75sp"
+                />
 
             <TextView
                 android:id="@+id/digital_meter1_distance_unit_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="bottom"
+                android:layout_gravity="bottom"
                 android:paddingStart="12sp"
                 android:textColor="#aaaaaa"
                 android:textSize="45sp" />

@@ -1,4 +1,4 @@
-package net.timboode.bluesquarespeedometer
+package net.timboode.statefulspeedometer
 
 import android.app.LocaleManager
 import android.content.Context
