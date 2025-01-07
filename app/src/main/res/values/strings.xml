@@ -14,6 +14,7 @@
     <string name="menu_this_app_licensing_information">Licensing information</string>
 
     <string name="metrics_speed">Speed</string>
+    <string name="metrics_total_distance">Total Distance Traveled</string>
     <string name="metrics_altitude">Altitude</string>
     <string name="metrics_msl_altitude">MSL Altitude</string>
     <string name="metrics_wgs84_altitude">WGS84 Altitude</string>
@@ -62,4 +63,6 @@
 
     <!-- Legal English texts -->
     <string name="license_apache_license_v2.0_name" translatable="false">Apache License, Version 2.0</string>
+    <string name="unit_kilometres">km</string>
+    <string name="unit_miles">miles</string>
 </resources>

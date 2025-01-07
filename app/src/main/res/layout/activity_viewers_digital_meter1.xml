@@ -23,23 +23,47 @@
             android:orientation="horizontal"
             android:gravity="center_horizontal"
             >
+
             <TextView
                 android:id="@+id/digital_meter1_textview"
-                android:layout_width="260sp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="112sp"
-                android:textColor="?baseTextColor"
                 android:gravity="end"
-                />
+                android:textColor="?baseTextColor"
+                android:textSize="175sp" />
+
             <TextView
                 android:id="@+id/digital_meter1_unit_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="36sp"
+                android:gravity="bottom"
                 android:paddingStart="12sp"
                 android:textColor="?baseTextColor"
+                android:textSize="50sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="right"
+            >
+
+            <TextView
+                android:id="@+id/digital_meter1_distance_textview"
+                android:layout_width="260sp"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:textColor="#aaaaaa"
+                android:textSize="75sp" />
+
+            <TextView
+                android:id="@+id/digital_meter1_distance_unit_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:gravity="bottom"
-                />
+                android:paddingStart="12sp"
+                android:textColor="#aaaaaa"
+                android:textSize="45sp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

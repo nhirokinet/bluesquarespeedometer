@@ -20,6 +20,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import net.nhiroki.bluesquarespeedometer.services.SpeedColorService
 import net.nhiroki.bluesquarespeedometer.viewers.DigitalSpeedometer1Activity
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -41,6 +42,8 @@ class MainActivity : AppCompatActivity() {
         const val PREFERENCE_VAL_ALTITUDE_DEFAULT:Int = 0
         const val PREFERENCE_VAL_ALTITUDE_METERS:Int = 0
         const val PREFERENCE_VAL_ALTITUDE_FEET:Int = 1
+
+        const val KEY_TOTAL_DISTANCE:String = "total_distance"
     }
 
     class MyLocationListener : LocationListener {
@@ -61,6 +64,17 @@ class MainActivity : AppCompatActivity() {
 
     var _locationManager:LocationManager? = null
     var _locationListener:LocationListener? = null
+
+    var _speedColorService: SpeedColorService = SpeedColorService()
+
+    var totalDistanceInMetres: Double = 0.0
+        private set
+        get
+
+    var lastLocation: Location? = null
+        private set
+
+    var updateCount: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,6 +114,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<TextView>(R.id.main_activity_version_info_footer).setText(getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME)
+
+        totalDistanceInMetres = PreferenceManager.getDefaultSharedPreferences(this).getFloat(KEY_TOTAL_DISTANCE, 0f).toDouble()
     }
 
     override fun onResume() {
@@ -125,6 +141,8 @@ class MainActivity : AppCompatActivity() {
             clearLocationDisplay()
             findViewById<TextView>(R.id.main_activity_permission_status_textview).setText(if (coarseLocationPermission) {R.string.permission_location_coarse} else {R.string.permission_location_no});
         }
+
+        totalDistanceInMetres = PreferenceManager.getDefaultSharedPreferences(this).getFloat(KEY_TOTAL_DISTANCE, 0f).toDouble()
     }
 
     override fun onStop() {
@@ -289,6 +307,29 @@ class MainActivity : AppCompatActivity() {
         return axisText + getText(R.string.unit_angle_deg).toString().format(degInt, degMinInt, degSecInt, degSubSecInt)
     }
 
+    fun setLocation(location: Location) {
+        if (lastLocation != null) {
+            totalDistanceInMetres += location.distanceTo(lastLocation!!)
+        }
+        lastLocation = location
+
+        if(updateCount++ % 25 == 0) {
+            updateCount = 0
+            PreferenceManager.getDefaultSharedPreferences(this).edit()
+                .putFloat(KEY_TOTAL_DISTANCE, totalDistanceInMetres.toFloat())
+                .apply()
+        }
+    }
+
+    private fun formatDistance(distance: Double): String {
+        return when {
+            distance >= 1000 -> String.format("%.1f", distance)
+            distance >= 100 -> String.format("%.2f", distance)
+            distance >= 10 -> String.format("%.3f", distance)
+            else -> String.format("%.4f", distance)
+        }
+    }
+
     /*
      * Imperial units conversion
      *
@@ -333,22 +374,46 @@ class MainActivity : AppCompatActivity() {
      */
     fun updateLocation(location:Location) {
         val speedUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_KEY_SPEED_UNIT, PREFERENCE_VAL_SPEED_UNIT_DEFAULT)!!
+
+        var color:Int = _speedColorService.getSpeedColor(location.speed * 3.6f)
+        setLocation(location)
+
+        var speedDigitsView = findViewById<TextView>(R.id.main_activity_speed_digits_textview)
+        var distanceDigitsView = findViewById<TextView>(R.id.main_activity_total_distance_digits_textview)
+        var distanceUnitsView = findViewById<TextView>(R.id.main_activity_total_distance_units_textview)
+
         when(speedUnit) {
             PREFERENCE_VAL_SPEED_UNIT_KM_H -> {
-                findViewById<TextView>(R.id.main_activity_speed_digits_textview).setText((location.speed * 3.6).toInt().toString())
+                speedDigitsView.setText((location.speed * 3.6).toInt().toString())
+                speedDigitsView.setTextColor(color)
                 findViewById<TextView>(R.id.main_activity_speed_unit_textview).setText(R.string.unit_km_per_hour)
+
+                distanceDigitsView.setText(formatDistance(this.totalDistanceInMetres / 1000.0))
+                distanceUnitsView.setText(R.string.unit_kilometres)
             }
             PREFERENCE_VAL_SPEED_UNIT_KNOT -> {
-                findViewById<TextView>(R.id.main_activity_speed_digits_textview).setText((location.speed * 3.6 / 1.852).toInt().toString())
+                speedDigitsView.setText((location.speed * 3.6 / 1.852).toInt().toString())
+                speedDigitsView.setTextColor(color)
                 findViewById<TextView>(R.id.main_activity_speed_unit_textview).setText(R.string.unit_knot)
+
+                distanceDigitsView.setText(formatDistance(this.totalDistanceInMetres / 1000.0))
+                distanceUnitsView.setText(R.string.unit_kilometres)
             }
             PREFERENCE_VAL_SPEED_UNIT_M_S -> {
-                findViewById<TextView>(R.id.main_activity_speed_digits_textview).setText((location.speed).toInt().toString())
+                speedDigitsView.setText((location.speed).toInt().toString())
+                speedDigitsView.setTextColor(color)
                 findViewById<TextView>(R.id.main_activity_speed_unit_textview).setText(R.string.unit_meter_per_second)
+
+                distanceDigitsView.setText(formatDistance(this.totalDistanceInMetres / 1000.0))
+                distanceUnitsView.setText(R.string.unit_kilometres)
             }
             PREFERENCE_VAL_SPEED_UNIT_MPH -> {
-                findViewById<TextView>(R.id.main_activity_speed_digits_textview).setText((location.speed * 3.6 / 1.609344).toInt().toString())
+                speedDigitsView.setText((location.speed * 3.6 / 1.609344).toInt().toString())
+                speedDigitsView.setTextColor(color)
                 findViewById<TextView>(R.id.main_activity_speed_unit_textview).setText(R.string.unit_mile_per_hour)
+
+                distanceDigitsView.setText(formatDistance(this.totalDistanceInMetres / 1609.344))
+                distanceUnitsView.setText(R.string.unit_miles)
             }
         }
 
