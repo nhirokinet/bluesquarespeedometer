@@ -5,5 +5,13 @@
         <item name="alertBackgroundColor">#dd0000</item>
         <item name="backgroundColor">#000000</item>
         <item name="android:textAllCaps">false</item>
+
+        <!--
+          Since Android 15, edge-to-edge is enforced.
+          However, this does not look nice with Blue Line Console design.
+          This is to be removed, so we must consider how to deal with the new design requirement.
+          For now, placing this workaround API.
+           -->
+        <item name="android:windowOptOutEdgeToEdgeEnforcement" tools:targetApi="35">true</item>
     </style>
 </resources>
