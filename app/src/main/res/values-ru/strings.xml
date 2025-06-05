@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">Синий квадратный спидометр</string>
+
+    <string name="permission_location_no">Не предоставлено разрешение на местоположение</string>
+    <string name="permission_location_coarse">Разрешено только приблизительное местоположение</string>
+    <string name="permission_location_fine">Разрешено точное местоположение</string>
+    <string name="permission_location_grant_prompt">Предоставить разрешение на местоположение</string>
+    <string name="permission_location_description">Это приложение использует спидометр на основе службы определения местоположения устройства, поэтому необходимо разрешение на точное определение местоположения.</string>
+
+    <string name="error_soft_location_not_enabled">Система местоположения сейчас не включена.</string>
+    <string name="error_soft_location_provider_not_enabled">Поставщик местоположения \"%1$s\" сейчас не включён.</string>
+
+    <string name="menu_this_app_digital_speedometer_fullscreen">Цифровой спидометр (полноэкранный)</string>
+    <string name="menu_this_app_licensing_information">Информация про лицензии</string>
+
+    <string name="metrics_speed">Скорость</string>
+    <string name="metrics_altitude">Высота</string>
+    <string name="metrics_msl_altitude">Высота MSL</string>
+    <string name="metrics_wgs84_altitude">Высота WGS84</string>
+    <string name="metrics_accuracy">Точность</string>
+    <string name="metrics_msl_altitude_accuracy">Точность высоты MSL</string>
+    <string name="metrics_info_time">Время</string>
+
+    <string name="unit_km_per_hour">км/ч</string>
+    <string name="unit_knot">узлов</string>
+    <string name="unit_meter_per_second">м/с</string>
+    <string name="unit_mile_per_hour">миль/ч</string>
+    <string name="unit_meters">м</string>
+    <string name="unit_feet">фут</string>
+    <string name="unit_angle_deg">%1$d°%2$02d\'%3$02d,%4$01d\"</string>
+
+    <string name="dialog_select_location_provider">Выберите поставщика местоположения</string>
+    <string name="dialog_select_speed_unit">Выберите единицы измерения скорости</string>
+    <string name="dialog_select_altitude_unit">Выберите единицы измерения высоты</string>
+
+    <string name="config_location_provider">Поставщик местоположения</string>
+    <string name="config_speed_unit">Единицы скорости</string>
+    <string name="config_altitude_unit">Единицы высоты</string>
+
+    <string name="coordinate_display_north">N</string>
+    <string name="coordinate_display_south">S</string>
+    <string name="coordinate_display_east">E</string>
+    <string name="coordinate_display_west">W</string>
+
+    <string name="general_caption_unset">(Не установлено)</string>
+    <string name="general_button_change">Изменить</string>
+    <string name="general_button_retry">Повторить</string>
+</resources>
