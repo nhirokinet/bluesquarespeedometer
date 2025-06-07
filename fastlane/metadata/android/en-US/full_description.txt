@@ -1,3 +1,6 @@
 Displays speed, altitude and current coordinates using device location provider.
 
 Blue Square Speedometer does not have network connection privilege, and does not have function to send information out of the device. Note that the information sent out by location provider itself of the device depends on OS setting.
+
+
+Source code: https://github.com/nhirokinet/bluesquarespeedometer
