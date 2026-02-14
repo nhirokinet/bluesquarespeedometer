@@ -58,6 +58,7 @@
         \n- Kotlin Stdlib
         \n- Coroutines support libraries for Kotlin
         \n- kotlinx-coroutines-android
+        \n- Google Guava
     </string>
 
     <!-- Legal English texts -->
