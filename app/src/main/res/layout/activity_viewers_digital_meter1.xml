@@ -1,45 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".viewers.DigitalSpeedometer1Activity"
-    android:id="@+id/car_meter1_root_view"
-    android:orientation="vertical"
-    android:paddingVertical="3dp"
-    android:background="@color/colorAccent"
-    android:keepScreenOn="true"
+    android:background="?backgroundColor"
+    android:id="@+id/main"
     >
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/car_meter1_root_view"
         android:orientation="vertical"
-        android:background="?backgroundColor"
-        android:gravity="center_vertical"
+        android:paddingVertical="3dp"
+        android:background="@color/colorAccent"
+        android:keepScreenOn="true"
         >
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="?backgroundColor"
+            android:gravity="center_vertical"
             >
-            <TextView
-                android:id="@+id/digital_meter1_textview"
-                android:layout_width="260sp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="112sp"
-                android:textColor="?baseTextColor"
-                android:gravity="end"
-                />
-            <TextView
-                android:id="@+id/digital_meter1_unit_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="36sp"
-                android:paddingStart="12sp"
-                android:textColor="?baseTextColor"
-                android:gravity="bottom"
-                />
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                >
+                <TextView
+                    android:id="@+id/digital_meter1_textview"
+                    android:layout_width="260sp"
+                    android:layout_height="wrap_content"
+                    android:textSize="112sp"
+                    android:textColor="?baseTextColor"
+                    android:gravity="end"
+                    />
+                <TextView
+                    android:id="@+id/digital_meter1_unit_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="36sp"
+                    android:paddingStart="12sp"
+                    android:textColor="?baseTextColor"
+                    android:gravity="bottom"
+                    />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

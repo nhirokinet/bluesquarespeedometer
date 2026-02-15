@@ -9,7 +9,11 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.View
 import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.OnApplyWindowInsetsListener
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import net.nhiroki.bluesquarespeedometer.MainActivity
 import net.nhiroki.bluesquarespeedometer.R
 
@@ -35,7 +39,15 @@ class DigitalSpeedometer1Activity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_viewers_digital_meter1)
+        ViewCompat.setOnApplyWindowInsetsListener(
+            findViewById<View?>(R.id.main),
+            OnApplyWindowInsetsListener { v: View?, insets: WindowInsetsCompat? ->
+                val systemBars = insets!!.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars())
+                v!!.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+                insets
+            })
 
         this._locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         this._locationListener = MyLocationListener(this)
