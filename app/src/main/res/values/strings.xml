@@ -11,7 +11,7 @@
     <string name="error_soft_location_provider_not_enabled">Location provider \"%1$s\" is not enabled now.</string>
 
     <string name="menu_this_app_digital_speedometer_fullscreen">Digital Speedometer (fullscreen)</string>
-    <string name="menu_this_app_licensing_information">Licensing information</string>
+    <string name="menu_this_app_licensing_information">License information</string>
 
     <string name="metrics_speed">Speed</string>
     <string name="metrics_altitude">Altitude</string>
