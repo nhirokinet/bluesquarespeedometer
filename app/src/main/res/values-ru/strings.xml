@@ -45,4 +45,6 @@
     <string name="general_caption_unset">(Не установлено)</string>
     <string name="general_button_change">Изменить</string>
     <string name="general_button_retry">Повторить</string>
+
+    <string name="licensing_source_code_header">Исходный код</string>
 </resources>

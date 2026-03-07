@@ -45,4 +45,6 @@
     <string name="general_caption_unset">(설정 없음)</string>
     <string name="general_button_change">변경</string>
     <string name="general_button_retry">다시 시도하기</string>
+
+    <string name="licensing_source_code_header">소스 코드</string>
 </resources>
