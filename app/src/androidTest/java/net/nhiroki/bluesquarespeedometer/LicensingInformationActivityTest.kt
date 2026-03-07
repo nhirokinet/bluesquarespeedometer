@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -20,9 +19,8 @@ import org.junit.runner.RunWith
 import java.util.Locale
 import java.util.TimeZone
 
-
 @RunWith(AndroidJUnit4::class)
-class MainActivityTest {
+class LicensingInformationActivityTest {
     var context: Context? = null
 
     @Before
@@ -43,14 +41,12 @@ class MainActivityTest {
     @Test
     fun testJustStartingUp() {
         // Just test app starts without problems loading libraries
-        ActivityScenario.launch(MainActivity::class.java)
-        Thread.sleep(3000)
+        ActivityScenario.launch(LicensingInformationActivity::class.java)
+        Thread.sleep(2000)
 
-        // Not sure why failing...
-        Assume.assumeTrue(Build.VERSION.SDK_INT >= 24)
-
-        Espresso.onView(ViewMatchers.withText("Speed"))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withText("Source code")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withText("License information")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withText("Apache License, Version 2.0")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
     @Test
@@ -73,10 +69,11 @@ class MainActivityTest {
         Locale.setDefault(Locale("ja", "JP"))
 
         // Just test app starts without problems loading libraries
-        ActivityScenario.launch(MainActivity::class.java)
-        Thread.sleep(3000)
+        ActivityScenario.launch(LicensingInformationActivity::class.java)
+        Thread.sleep(2000)
 
-        Espresso.onView(ViewMatchers.withText("速度"))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withText("ソースコード")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withText("License information")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withText("Apache License, Version 2.0")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 }
