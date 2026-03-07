@@ -45,4 +45,6 @@
     <string name="general_caption_unset">(Ikke satt)</string>
     <string name="general_button_change">Endre</string>
     <string name="general_button_retry">Prøv igjen</string>
+
+    <string name="licensing_source_code_header">Kildekode</string>
 </resources>

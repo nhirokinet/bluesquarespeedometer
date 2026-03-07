@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Blue Square Speedometer</string>
+    <string name="app_source_code_url" translatable="false">https://github.com/nhirokinet/bluesquarespeedometer</string>
 
     <string name="permission_location_no">No Location Permission Granted</string>
     <string name="permission_location_coarse">Only Coarse Location Granted</string>
@@ -45,6 +46,8 @@
     <string name="general_caption_unset">(Not set)</string>
     <string name="general_button_change">Change</string>
     <string name="general_button_retry">Retry</string>
+
+    <string name="licensing_source_code_header">Source code</string>
 
     <!-- Licensing information, untranslatable not to make slightest difference -->
     <string name="licensing_notice_header" translatable="false">License information</string>

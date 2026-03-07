@@ -14,6 +14,21 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/licensing_source_code_header"
+            android:textColor="?baseTextColor"
+            android:textStyle="bold"
+            android:layout_marginBottom="3sp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_source_code_url"
+            android:autoLink="web"
+            android:textColor="?baseTextColor"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/licensing_notice_header"
             android:textColor="?baseTextColor"
             android:textStyle="bold"

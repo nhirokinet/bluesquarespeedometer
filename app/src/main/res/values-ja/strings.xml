@@ -45,4 +45,6 @@
     <string name="general_caption_unset">（未設定）</string>
     <string name="general_button_change">変更</string>
     <string name="general_button_retry">再試行</string>
+
+    <string name="licensing_source_code_header">ソースコード</string>
 </resources>
