@@ -11,6 +11,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/colorAccent"
+            android:layout_marginVertical="4sp"
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,6 +32,12 @@
             android:autoLink="web"
             android:textColor="?baseTextColor"
             />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/colorAccent"
+            android:layout_marginVertical="4sp"
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,6 +51,12 @@
             android:layout_height="wrap_content"
             android:text="@string/licensing_notice_body"
             android:textColor="?baseTextColor"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/colorAccent"
+            android:layout_marginVertical="4sp"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -56,6 +74,12 @@
             android:textColor="?baseTextColor"
             android:fontFamily="monospace"
             android:textSize="8sp"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/colorAccent"
+            android:layout_marginVertical="4sp"
             />
     </LinearLayout>
 </ScrollView>
