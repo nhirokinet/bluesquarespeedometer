@@ -62,6 +62,7 @@
         \n- Coroutines support libraries for Kotlin
         \n- kotlinx-coroutines-android
         \n- Google Guava
+        \n- JSpecify
     </string>
 
     <!-- Legal English texts -->
