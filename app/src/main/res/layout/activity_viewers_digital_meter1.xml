@@ -7,6 +7,7 @@
     tools:context=".viewers.DigitalSpeedometer1Activity"
     android:background="?backgroundColor"
     android:id="@+id/main"
+    android:keepScreenOn="true"
     >
 
     <LinearLayout
@@ -16,7 +17,6 @@
         android:orientation="vertical"
         android:paddingVertical="3dp"
         android:background="@color/colorAccent"
-        android:keepScreenOn="true"
         >
         <LinearLayout
             android:layout_width="match_parent"
