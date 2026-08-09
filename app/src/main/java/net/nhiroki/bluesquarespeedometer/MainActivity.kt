@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         const val PREFERENCE_VAL_SPEED_UNIT_M_S:Int = 2
         const val PREFERENCE_VAL_SPEED_UNIT_MPH:Int = 3
 
-        const val PREFERENCE_KEY_ALTTIUDE_UNIT:String = "preference_altitude_unit"
+        const val PREFERENCE_KEY_ALTITUDE_UNIT:String = "preference_altitude_unit"
         const val PREFERENCE_VAL_ALTITUDE_DEFAULT:Int = 0
         const val PREFERENCE_VAL_ALTITUDE_METERS:Int = 0
         const val PREFERENCE_VAL_ALTITUDE_FEET:Int = 1
@@ -160,7 +160,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.main_activity_config_speed_unit_textview).setText(speedUnitName)
         findViewById<TextView>(R.id.main_activity_speed_unit_textview).setText(speedUnitName)
 
-        val altitudeUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_KEY_ALTTIUDE_UNIT, PREFERENCE_VAL_ALTITUDE_DEFAULT)!!
+        val altitudeUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_KEY_ALTITUDE_UNIT, PREFERENCE_VAL_ALTITUDE_DEFAULT)!!
         findViewById<TextView>(R.id.main_activity_speed_digits_textview).setText("-")
         val altitudeUnitName = {
             when(altitudeUnit) {
@@ -257,7 +257,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun changeAltitudeUnitButtonClicked() {
-        val currentAltitudeUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_KEY_ALTTIUDE_UNIT, PREFERENCE_VAL_ALTITUDE_DEFAULT)!!
+        val currentAltitudeUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_KEY_ALTITUDE_UNIT, PREFERENCE_VAL_ALTITUDE_DEFAULT)!!
 
         val candidates:Array<CharSequence> = Array(2, {
             when(it) {
@@ -270,7 +270,7 @@ class MainActivity : AppCompatActivity() {
             dialog, which ->
                 val prefEdit =
                     PreferenceManager.getDefaultSharedPreferences(this).edit()
-                prefEdit.putInt(PREFERENCE_KEY_ALTTIUDE_UNIT, which)
+                prefEdit.putInt(PREFERENCE_KEY_ALTITUDE_UNIT, which)
                 prefEdit.apply()
                 dialog.cancel()
                 this.updateOptionsShown()
@@ -376,7 +376,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val altitudeUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_KEY_ALTTIUDE_UNIT, PREFERENCE_VAL_ALTITUDE_DEFAULT)!!
+        val altitudeUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_KEY_ALTITUDE_UNIT, PREFERENCE_VAL_ALTITUDE_DEFAULT)!!
         var altitudeMeterToShow:Double
         if (Build.VERSION.SDK_INT >= 34 && location.hasMslAltitude()) {
             altitudeMeterToShow = location.mslAltitudeMeters
