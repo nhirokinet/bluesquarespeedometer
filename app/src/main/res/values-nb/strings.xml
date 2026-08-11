@@ -20,6 +20,7 @@
     <string name="metrics_accuracy">Nøyaktighet</string>
     <string name="metrics_msl_altitude_accuracy">Høydenøyaktighet (moh.)</string>
     <string name="metrics_info_time">Tid</string>
+    <string name="metrics_barometric_pressure">Barometric pressure</string>
 
     <string name="unit_km_per_hour">km/t</string>
     <string name="unit_knot">kn</string>
@@ -28,14 +29,18 @@
     <string name="unit_meters">m</string>
     <string name="unit_feet">ft</string>
     <string name="unit_angle_deg">%1$d°%2$02d\'%3$02d,%4$01d\"</string>
+    <string name="unit_hpa">hPa</string>
+    <string name="unit_inhg">inHg</string>
 
     <string name="dialog_select_location_provider">Velg posisjonstjeneste</string>
     <string name="dialog_select_speed_unit">Velg hastighetsenhet</string>
     <string name="dialog_select_altitude_unit">Velg høydeenhet</string>
+    <string name="dialog_select_air_pressure_unit">Select air pressure unit</string>
 
     <string name="config_location_provider">Posisjonstjeneste</string>
     <string name="config_speed_unit">Hastighetsenhet</string>
     <string name="config_altitude_unit">Høydeenhet</string>
+    <string name="config_air_pressure_unit">Air pressure unit</string>
 
     <string name="coordinate_display_north">N</string>
     <string name="coordinate_display_south">S</string>

@@ -20,6 +20,7 @@
     <string name="metrics_accuracy">정확도</string>
     <string name="metrics_msl_altitude_accuracy">평균 해면 고도 정확도</string>
     <string name="metrics_info_time">시각 정보</string>
+    <string name="metrics_barometric_pressure">기압</string>
 
     <string name="unit_km_per_hour">km/h</string>
     <string name="unit_knot">kn</string>
@@ -28,14 +29,18 @@
     <string name="unit_meters">m</string>
     <string name="unit_feet">ft</string>
     <string name="unit_angle_deg">%1$d°%2$02d\'%3$02d.%4$01d\"</string>
+    <string name="unit_hpa">hPa</string>
+    <string name="unit_inhg">inHg</string>
 
     <string name="dialog_select_location_provider">위치 정보 제공자 설정</string>
     <string name="dialog_select_speed_unit">속도 단위 설정</string>
     <string name="dialog_select_altitude_unit">고도 단위 설정</string>
+    <string name="dialog_select_air_pressure_unit">기압 단위 설정</string>
 
     <string name="config_location_provider">위치 정보 제공자</string>
     <string name="config_speed_unit">속도 단위</string>
     <string name="config_altitude_unit">고도 단위</string>
+    <string name="config_air_pressure_unit">기압 단위</string>
 
     <string name="coordinate_display_north">N</string>
     <string name="coordinate_display_south">S</string>

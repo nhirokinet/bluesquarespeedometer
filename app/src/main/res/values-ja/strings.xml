@@ -20,6 +20,7 @@
     <string name="metrics_accuracy">精度</string>
     <string name="metrics_msl_altitude_accuracy">平均海面高度精度</string>
     <string name="metrics_info_time">時刻情報</string>
+    <string name="metrics_barometric_pressure">気圧</string>
 
     <string name="unit_km_per_hour">km/h</string>
     <string name="unit_knot">kn</string>
@@ -28,14 +29,18 @@
     <string name="unit_meters">m</string>
     <string name="unit_feet">ft</string>
     <string name="unit_angle_deg">%1$d°%2$02d\'%3$02d.%4$01d\"</string>
+    <string name="unit_hpa">hPa</string>
+    <string name="unit_inhg">inHg</string>
 
     <string name="dialog_select_location_provider">位置情報プロバイダの選択</string>
     <string name="dialog_select_speed_unit">速度の単位の選択</string>
     <string name="dialog_select_altitude_unit">高度の単位の選択</string>
+    <string name="dialog_select_air_pressure_unit">気圧の単位の選択</string>
 
     <string name="config_location_provider">位置情報プロバイダ</string>
     <string name="config_speed_unit">速度の単位</string>
     <string name="config_altitude_unit">高度の単位</string>
+    <string name="config_air_pressure_unit">気圧の単位</string>
 
     <string name="coordinate_display_north">N</string>
     <string name="coordinate_display_south">S</string>
