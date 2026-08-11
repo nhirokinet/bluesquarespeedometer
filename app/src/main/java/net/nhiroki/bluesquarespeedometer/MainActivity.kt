@@ -213,7 +213,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.main_activity_speed_unit_textview).setText(speedUnitName)
 
         val altitudeUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_KEY_ALTITUDE_UNIT, PREFERENCE_VAL_ALTITUDE_DEFAULT)!!
-        findViewById<TextView>(R.id.main_activity_speed_digits_textview).setText("-")
+        findViewById<TextView>(R.id.main_activity_altitude_digits_textview).setText("-")
         val altitudeUnitName = {
             when(altitudeUnit) {
                 PREFERENCE_VAL_ALTITUDE_METERS -> getText(R.string.unit_meters)
