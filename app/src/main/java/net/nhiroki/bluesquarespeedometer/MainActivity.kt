@@ -7,6 +7,10 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -45,6 +49,11 @@ class MainActivity : AppCompatActivity() {
         const val PREFERENCE_VAL_ALTITUDE_DEFAULT:Int = 0
         const val PREFERENCE_VAL_ALTITUDE_METERS:Int = 0
         const val PREFERENCE_VAL_ALTITUDE_FEET:Int = 1
+
+        const val PREFERENCE_KEY_AIR_PRESSURE_UNIT:String = "preference_air_pressure_unit"
+        const val PREFERENCE_VAL_AIR_PRESSURE_DEFAULT:Int = 0
+        const val PREFERENCE_VAL_AIR_PRESSURE_HPA:Int = 0
+        const val PREFERENCE_VAL_AIR_PRESSURE_INHG:Int = 1
     }
 
     class MyLocationListener : LocationListener {
@@ -66,6 +75,28 @@ class MainActivity : AppCompatActivity() {
     var _locationManager:LocationManager? = null
     var _locationListener:LocationListener? = null
 
+    class MySensorEventListener : SensorEventListener {
+        val mainActivity:MainActivity
+
+        constructor(mainActivity: MainActivity) {
+            this.mainActivity = mainActivity
+        }
+
+        override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+        }
+
+        override fun onSensorChanged(event: SensorEvent?) {
+            if (event?.sensor?.type == Sensor.TYPE_PRESSURE) {
+                if (event.values.size > 0) {
+                    mainActivity.updatePressure(event.values[0])
+                }
+            }
+        }
+    }
+
+    var _sensorManager:SensorManager? = null
+    var _sensorEventListener: SensorEventListener? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.enableEdgeToEdge()
@@ -80,6 +111,9 @@ class MainActivity : AppCompatActivity() {
 
         this._locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         this._locationListener = MyLocationListener(this)
+
+        this._sensorManager = this.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        this._sensorEventListener = MySensorEventListener(this)
 
         val locationPermissionRequest = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
@@ -106,6 +140,9 @@ class MainActivity : AppCompatActivity() {
         }
         this.findViewById<Button>(R.id.main_activity_altitude_unit_button).setOnClickListener {
             changeAltitudeUnitButtonClicked()
+        }
+        this.findViewById<Button>(R.id.main_activity_air_pressure_unit_button).setOnClickListener {
+            changePressureUnitButtonClicked()
         }
         this.findViewById<Button>(R.id.main_activity_refresh_location_provider_button).setOnClickListener {
             updateLocationProvider()
@@ -137,10 +174,25 @@ class MainActivity : AppCompatActivity() {
             clearLocationDisplay()
             findViewById<TextView>(R.id.main_activity_permission_status_textview).setText(if (coarseLocationPermission) {R.string.permission_location_coarse} else {R.string.permission_location_no});
         }
+
+        val pressureSensorList = this._sensorManager!!.getSensorList(Sensor.TYPE_PRESSURE)
+        if (pressureSensorList.size > 0) {
+            findViewById<TextView>(R.id.main_activity_speed_digits_textview).setText("-")
+            findViewById<View>(R.id.main_activity_pressure_area).visibility = View.VISIBLE
+            findViewById<View>(R.id.main_activity_config_air_pressure_area).visibility = View.VISIBLE
+            for (sensor in pressureSensorList) {
+                this._sensorManager!!.registerListener(this._sensorEventListener, sensor, 250000)
+            }
+
+        } else {
+            findViewById<View>(R.id.main_activity_pressure_area).visibility = View.GONE
+            findViewById<View>(R.id.main_activity_config_air_pressure_area).visibility = View.GONE
+        }
     }
 
     override fun onStop() {
         this._locationManager!!.removeUpdates(this._locationListener!!)
+        this._sensorManager!!.unregisterListener(this._sensorEventListener)
         super.onStop()
     }
 
@@ -171,6 +223,18 @@ class MainActivity : AppCompatActivity() {
         }()
         findViewById<TextView>(R.id.main_activity_config_altitude_unit_textview).setText(altitudeUnitName)
         findViewById<TextView>(R.id.main_activity_altitude_unit_textview).setText(altitudeUnitName)
+
+        val pressureUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_KEY_AIR_PRESSURE_UNIT, PREFERENCE_VAL_AIR_PRESSURE_DEFAULT)!!
+        findViewById<TextView>(R.id.main_activity_pressure_digits_textview).setText("-")
+        val pressureUnitName = {
+            when(pressureUnit) {
+                PREFERENCE_VAL_AIR_PRESSURE_HPA -> getText(R.string.unit_hpa)
+                PREFERENCE_VAL_AIR_PRESSURE_INHG -> getText(R.string.unit_inhg)
+                else -> ""
+            }
+        }()
+        findViewById<TextView>(R.id.main_activity_config_air_pressure_unit_textview).setText(pressureUnitName)
+        findViewById<TextView>(R.id.main_activity_pressure_unit_textview).setText(pressureUnitName)
     }
 
     @SuppressLint("MissingPermission")
@@ -277,6 +341,28 @@ class MainActivity : AppCompatActivity() {
         }).create().show()
     }
 
+    private fun changePressureUnitButtonClicked() {
+        val currentPressureUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_KEY_AIR_PRESSURE_UNIT, PREFERENCE_VAL_AIR_PRESSURE_DEFAULT)!!
+
+        val candidates:Array<CharSequence> = Array(2, {
+            when(it) {
+                PREFERENCE_VAL_AIR_PRESSURE_HPA -> getText(R.string.unit_hpa)
+                PREFERENCE_VAL_AIR_PRESSURE_INHG -> getText(R.string.unit_inhg)
+                else -> ""
+            }
+        })
+        AlertDialog.Builder(this).setTitle(R.string.dialog_select_air_pressure_unit).setSingleChoiceItems(candidates, currentPressureUnit, DialogInterface.OnClickListener {
+                dialog, which ->
+            val prefEdit =
+                PreferenceManager.getDefaultSharedPreferences(this).edit()
+            prefEdit.putInt(PREFERENCE_KEY_AIR_PRESSURE_UNIT, which)
+            prefEdit.apply()
+            dialog.cancel()
+            this.updateOptionsShown()
+        }).create().show()
+
+    }
+
     private fun degreeToDisplayText(degree:Double, positiveAsix:String, negativeAxis:String): String {
         var degreeRemain:Double = degree
         var axisText = positiveAsix
@@ -299,6 +385,34 @@ class MainActivity : AppCompatActivity() {
         val degSubSecInt:Int = (degreeRemain * 10.0).toInt()
 
         return axisText + getText(R.string.unit_angle_deg).toString().format(degInt, degMinInt, degSecInt, degSubSecInt)
+    }
+
+    /*
+     * inHg conversion
+     *
+     * 1 inHg ~= 3386.389 Pa
+     *   Couldn't find the precise information, but at least, the following refers inHg as 3386.389 Pa
+     *     https://en.wikipedia.org/wiki/Inch_of_mercury
+     *     https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication811e2008.pdf
+     *
+     *   Japanese 計量法 (Measrurement Act.): defines inHg as 3386.39 Pa
+     *     https://laws.e-gov.go.jp/law/404CO0000000357
+     *     > 水銀柱インチ パスカル又はニュートン毎平方メートルの三千三百八十六・三九倍
+     *
+     *   As long as displaying just 5 digits (like 29.921 inHg), further precision is not a problem. Using 3386.389.
+     */
+    fun updatePressure(pressure_hPa: Float) {
+        val pressureUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_KEY_AIR_PRESSURE_UNIT, PREFERENCE_VAL_AIR_PRESSURE_DEFAULT)!!
+        when(pressureUnit) {
+            PREFERENCE_VAL_AIR_PRESSURE_HPA -> {
+                findViewById<TextView>(R.id.main_activity_pressure_digits_textview).setText(String.format("%.2f", pressure_hPa))
+                findViewById<TextView>(R.id.main_activity_pressure_unit_textview).setText(R.string.unit_hpa)
+            }
+            PREFERENCE_VAL_AIR_PRESSURE_INHG -> {
+                findViewById<TextView>(R.id.main_activity_pressure_digits_textview).setText(String.format("%.3f", pressure_hPa / 33.86389))
+                findViewById<TextView>(R.id.main_activity_pressure_unit_textview).setText(R.string.unit_inhg)
+            }
+        }
     }
 
     /*

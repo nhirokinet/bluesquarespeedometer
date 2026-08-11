@@ -126,6 +126,40 @@
                 />
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/main_activity_pressure_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/metrics_barometric_pressure"
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="bottom|end"
+                >
+                <TextView
+                    android:id="@+id/main_activity_pressure_digits_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="40sp"
+                    android:fontFamily="monospace"
+                    android:textColor="?baseTextColor"
+                    android:paddingEnd="30sp"
+                    />
+                <TextView
+                    android:id="@+id/main_activity_pressure_unit_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="24sp"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:background="@color/colorAccent"
@@ -258,6 +292,42 @@
                 />
             <Button
                 android:id="@+id/main_activity_altitude_unit_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/general_button_change"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/main_activity_config_air_pressure_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/config_air_pressure_unit"
+                    />
+                <TextView
+                    android:id="@+id/main_activity_config_air_pressure_unit_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?baseTextColor"
+                    />
+            </LinearLayout>
+            <Space
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                />
+            <Button
+                android:id="@+id/main_activity_air_pressure_unit_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
