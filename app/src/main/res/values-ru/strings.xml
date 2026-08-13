@@ -21,6 +21,8 @@
     <string name="metrics_msl_altitude_accuracy">Точность высоты MSL</string>
     <string name="metrics_info_time">Время</string>
     <string name="metrics_barometric_pressure">Barometric pressure</string>
+    <string name="metrics_pressure_altitude_qne">Pressure altitude (QNE)</string>
+    <string name="metrics_pressure_sea_level">Sea-level pressure</string>
 
     <string name="unit_km_per_hour">км/ч</string>
     <string name="unit_knot">узлов</string>

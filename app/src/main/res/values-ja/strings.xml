@@ -21,6 +21,8 @@
     <string name="metrics_msl_altitude_accuracy">平均海面高度精度</string>
     <string name="metrics_info_time">時刻情報</string>
     <string name="metrics_barometric_pressure">気圧</string>
+    <string name="metrics_pressure_altitude_qne">気圧高度（QNE）</string>
+    <string name="metrics_pressure_sea_level">海面更正気圧</string>
 
     <string name="unit_km_per_hour">km/h</string>
     <string name="unit_knot">kn</string>

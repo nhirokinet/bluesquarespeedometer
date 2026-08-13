@@ -21,6 +21,8 @@
     <string name="metrics_msl_altitude_accuracy">Høydenøyaktighet (moh.)</string>
     <string name="metrics_info_time">Tid</string>
     <string name="metrics_barometric_pressure">Barometric pressure</string>
+    <string name="metrics_pressure_altitude_qne">Pressure altitude (QNE)</string>
+    <string name="metrics_pressure_sea_level">Sea-level pressure</string>
 
     <string name="unit_km_per_hour">km/t</string>
     <string name="unit_knot">kn</string>

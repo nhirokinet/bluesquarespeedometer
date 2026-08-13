@@ -83,6 +83,7 @@
                 android:textColor="?baseTextColor"
                 android:fontFamily="monospace"
                 android:paddingEnd="30sp"
+                android:gravity="right"
                 />
             <TextView
                 android:id="@+id/main_activity_speed_unit_textview"
@@ -117,6 +118,7 @@
                 android:fontFamily="monospace"
                 android:textColor="?baseTextColor"
                 android:paddingEnd="30sp"
+                android:gravity="right"
                 />
             <TextView
                 android:id="@+id/main_activity_altitude_unit_textview"
@@ -149,7 +151,8 @@
                     android:textSize="40sp"
                     android:fontFamily="monospace"
                     android:textColor="?baseTextColor"
-                    android:paddingEnd="30sp"
+                    android:paddingEnd="20sp"
+                    android:gravity="right"
                     />
                 <TextView
                     android:id="@+id/main_activity_pressure_unit_textview"
@@ -157,6 +160,86 @@
                     android:layout_height="wrap_content"
                     android:textSize="24sp"
                     />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="end"
+                >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="end"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/metrics_pressure_altitude_qne"
+                        android:layout_gravity="end"
+                        />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="bottom|end"
+                        >
+                        <TextView
+                            android:id="@+id/main_activity_pressure_altitude_digits_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:gravity="right"
+                            android:fontFamily="monospace"
+                            android:textColor="?baseTextColor"
+                            android:paddingEnd="10sp"
+                            />
+                        <TextView
+                            android:id="@+id/main_activity_pressure_altitude_unit_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="end"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/metrics_pressure_sea_level"
+                        android:layout_gravity="end"
+                        />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="bottom|end"
+                        >
+                        <TextView
+                            android:id="@+id/main_activity_pressure_sea_level_digits_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:fontFamily="monospace"
+                            android:textColor="?baseTextColor"
+                            android:gravity="right"
+                            android:paddingEnd="10sp"
+                            android:minWidth="120sp"
+                            />
+                        <TextView
+                            android:id="@+id/main_activity_pressure_sea_level_unit_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
