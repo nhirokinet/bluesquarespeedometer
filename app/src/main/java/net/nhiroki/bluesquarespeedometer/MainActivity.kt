@@ -74,6 +74,7 @@ class MainActivity : AppCompatActivity() {
 
     var _locationManager:LocationManager? = null
     var _locationListener:LocationListener? = null
+    var _displayedHeightM:Double = Double.NaN
 
     class MySensorEventListener : SensorEventListener {
         val mainActivity:MainActivity
@@ -177,7 +178,6 @@ class MainActivity : AppCompatActivity() {
 
         val pressureSensorList = this._sensorManager!!.getSensorList(Sensor.TYPE_PRESSURE)
         if (pressureSensorList.size > 0) {
-            findViewById<TextView>(R.id.main_activity_speed_digits_textview).setText("-")
             findViewById<View>(R.id.main_activity_pressure_area).visibility = View.VISIBLE
             findViewById<View>(R.id.main_activity_config_air_pressure_area).visibility = View.VISIBLE
             for (sensor in pressureSensorList) {
@@ -193,6 +193,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         this._locationManager!!.removeUpdates(this._locationListener!!)
         this._sensorManager!!.unregisterListener(this._sensorEventListener)
+        this._displayedHeightM = Double.NaN
         super.onStop()
     }
 
@@ -235,6 +236,12 @@ class MainActivity : AppCompatActivity() {
         }()
         findViewById<TextView>(R.id.main_activity_config_air_pressure_unit_textview).setText(pressureUnitName)
         findViewById<TextView>(R.id.main_activity_pressure_unit_textview).setText(pressureUnitName)
+
+        findViewById<TextView>(R.id.main_activity_pressure_altitude_digits_textview).setText("-")
+        findViewById<TextView>(R.id.main_activity_pressure_altitude_unit_textview).setText(altitudeUnitName)
+
+        findViewById<TextView>(R.id.main_activity_pressure_sea_level_digits_textview).setText("-")
+        findViewById<TextView>(R.id.main_activity_pressure_sea_level_unit_textview).setText(pressureUnitName)
     }
 
     @SuppressLint("MissingPermission")
@@ -413,6 +420,57 @@ class MainActivity : AppCompatActivity() {
                 findViewById<TextView>(R.id.main_activity_pressure_unit_textview).setText(R.string.unit_inhg)
             }
         }
+
+        val pressureAltitude:Double = ISAPressureAltitude.pressureHpaToAltitudeM(pressure_hPa.toDouble())
+        val altitudeUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_KEY_ALTITUDE_UNIT, PREFERENCE_VAL_ALTITUDE_DEFAULT)!!
+        when(altitudeUnit) {
+            PREFERENCE_VAL_ALTITUDE_METERS -> {
+                if(pressureAltitude.isNaN()) {
+                    findViewById<TextView>(R.id.main_activity_pressure_altitude_digits_textview).setText("-")
+                } else {
+                    findViewById<TextView>(R.id.main_activity_pressure_altitude_digits_textview).setText(String.format("%.1f", pressureAltitude))
+                }
+                findViewById<TextView>(R.id.main_activity_pressure_altitude_unit_textview).setText(R.string.unit_meters)
+            }
+            PREFERENCE_VAL_ALTITUDE_FEET -> {
+                if(pressureAltitude.isNaN()) {
+                    findViewById<TextView>(R.id.main_activity_pressure_altitude_digits_textview).setText("-")
+                } else {
+                    findViewById<TextView>(R.id.main_activity_pressure_altitude_digits_textview).setText((pressureAltitude / 0.3048).toInt().toString())
+                }
+                findViewById<TextView>(R.id.main_activity_pressure_altitude_unit_textview).setText(R.string.unit_feet)
+            }
+        }
+
+        var pressureSeaLevel:Double = Double.NaN
+        if (! this._displayedHeightM.isNaN()) {
+            pressureSeaLevel = ISAPressureAltitude.pressureHpaAtSeaLevel(
+                pressure_hPa.toDouble(),
+                this._displayedHeightM
+            )
+        }
+        if (! pressureSeaLevel.isNaN()) {
+            when(pressureUnit) {
+                PREFERENCE_VAL_AIR_PRESSURE_HPA -> {
+                    findViewById<TextView>(R.id.main_activity_pressure_sea_level_digits_textview).setText(String.format("%.1f", pressureSeaLevel))
+                    findViewById<TextView>(R.id.main_activity_pressure_sea_level_unit_textview).setText(R.string.unit_hpa)
+                }
+                PREFERENCE_VAL_AIR_PRESSURE_INHG -> {
+                    findViewById<TextView>(R.id.main_activity_pressure_sea_level_digits_textview).setText(String.format("%.2f", pressureSeaLevel / 33.86389))
+                    findViewById<TextView>(R.id.main_activity_pressure_sea_level_unit_textview).setText(R.string.unit_inhg)
+                }
+            }
+        } else {
+            findViewById<TextView>(R.id.main_activity_pressure_sea_level_digits_textview).setText("-")
+            when(pressureUnit) {
+                PREFERENCE_VAL_AIR_PRESSURE_HPA -> {
+                    findViewById<TextView>(R.id.main_activity_pressure_sea_level_unit_textview).setText(R.string.unit_hpa)
+                }
+                PREFERENCE_VAL_AIR_PRESSURE_INHG -> {
+                    findViewById<TextView>(R.id.main_activity_pressure_sea_level_unit_textview).setText(R.string.unit_inhg)
+                }
+            }
+        }
     }
 
     /*
@@ -511,6 +569,7 @@ class MainActivity : AppCompatActivity() {
                 findViewById<TextView>(R.id.main_activity_altitude_unit_textview).setText(R.string.unit_feet)
             }
         }
+        this._displayedHeightM = altitudeMeterToShow
 
         var currentCordinateText:String = ""
         currentCordinateText += (degreeToDisplayText(location.longitude, getText(R.string.coordinate_display_east).toString(), getText(R.string.coordinate_display_west).toString()) + " " +
