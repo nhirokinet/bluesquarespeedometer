@@ -28,8 +28,8 @@
     <string name="unit_knot">kn</string>
     <string name="unit_meter_per_second">m/s</string>
     <string name="unit_mile_per_hour">mph</string>
-    <string name="unit_meters">m</string>
-    <string name="unit_meters_per_minute">m/分</string>
+    <string name="unit_meter">m</string>
+    <string name="unit_meter_per_minute">m/分</string>
     <string name="unit_feet">ft</string>
     <string name="unit_feet_per_minute">ft/分</string>
     <string name="unit_angle_deg">%1$d°%2$02d\'%3$02d.%4$01d\"</string>
