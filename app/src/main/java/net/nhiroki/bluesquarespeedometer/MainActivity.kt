@@ -223,7 +223,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.main_activity_altitude_digits_textview).setText("-")
         val altitudeUnitName = {
             when(altitudeUnit) {
-                PREFERENCE_VAL_ALTITUDE_METERS -> getText(R.string.unit_meters)
+                PREFERENCE_VAL_ALTITUDE_METERS -> getText(R.string.unit_meter)
                 PREFERENCE_VAL_ALTITUDE_FEET -> getText(R.string.unit_feet)
                 else -> ""
             }
@@ -338,7 +338,7 @@ class MainActivity : AppCompatActivity() {
 
         val candidates:Array<CharSequence> = Array(2, {
             when(it) {
-                PREFERENCE_VAL_ALTITUDE_METERS -> getText(R.string.unit_meters)
+                PREFERENCE_VAL_ALTITUDE_METERS -> getText(R.string.unit_meter)
                 PREFERENCE_VAL_ALTITUDE_FEET -> getText(R.string.unit_feet)
                 else -> ""
             }
@@ -449,7 +449,7 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     findViewById<TextView>(R.id.main_activity_pressure_altitude_digits_textview).setText(String.format("%7.1f", pressureAltitudeM))
                 }
-                findViewById<TextView>(R.id.main_activity_pressure_altitude_unit_textview).setText(R.string.unit_meters)
+                findViewById<TextView>(R.id.main_activity_pressure_altitude_unit_textview).setText(R.string.unit_meter)
             }
             PREFERENCE_VAL_ALTITUDE_FEET -> {
                 if(pressureAltitudeM.isNaN()) {
@@ -560,7 +560,7 @@ class MainActivity : AppCompatActivity() {
                         String.format( ConfigurationCompat.getLocales(resources.configuration)[0], "%s%4d", valToShowSign, valToShowAbs)
                     )
                 }
-                findViewById<TextView>(R.id.main_activity_pressure_altitude_speed_unit_textview).setText(R.string.unit_meters_per_minute)
+                findViewById<TextView>(R.id.main_activity_pressure_altitude_speed_unit_textview).setText(R.string.unit_meter_per_minute)
             }
             PREFERENCE_VAL_ALTITUDE_FEET -> {
                 if (altitudeSpeedMPerMin.isNaN()) {
@@ -673,7 +673,7 @@ class MainActivity : AppCompatActivity() {
         when(altitudeUnit) {
             PREFERENCE_VAL_ALTITUDE_METERS -> {
                 findViewById<TextView>(R.id.main_activity_altitude_digits_textview).setText(altitudeMeterToShow.toInt().toString())
-                findViewById<TextView>(R.id.main_activity_altitude_unit_textview).setText(R.string.unit_meters)
+                findViewById<TextView>(R.id.main_activity_altitude_unit_textview).setText(R.string.unit_meter)
             }
             PREFERENCE_VAL_ALTITUDE_FEET -> {
                 findViewById<TextView>(R.id.main_activity_altitude_digits_textview).setText((altitudeMeterToShow / 0.3048).toInt().toString())
@@ -691,7 +691,7 @@ class MainActivity : AppCompatActivity() {
             currentCordinateText += "\n" + getText(R.string.metrics_wgs84_altitude) + ": "
             when(altitudeUnit) {
                 PREFERENCE_VAL_ALTITUDE_METERS -> {
-                    currentCordinateText += location.altitude.toInt().toString() + " " + getText(R.string.unit_meters)
+                    currentCordinateText += location.altitude.toInt().toString() + " " + getText(R.string.unit_meter)
                 }
                 PREFERENCE_VAL_ALTITUDE_FEET -> {
                     currentCordinateText += ((location.altitude / 0.3048).toInt().toString()) + " " + getText(R.string.unit_feet)
@@ -702,12 +702,12 @@ class MainActivity : AppCompatActivity() {
 
         var geolocationDetailText = ""
         geolocationDetailText += location.provider + "\n";
-        geolocationDetailText += getText(R.string.metrics_accuracy).toString() + ": " + String.format("%.1f", location.accuracy) + " " + getText(R.string.unit_meters) +  "\n"
+        geolocationDetailText += getText(R.string.metrics_accuracy).toString() + ": " + String.format("%.1f", location.accuracy) + " " + getText(R.string.unit_meter) +  "\n"
         if (Build.VERSION.SDK_INT >= 34 && location.hasMslAltitude()) {
             geolocationDetailText += getText(R.string.metrics_msl_altitude_accuracy).toString() + ": "
             when(altitudeUnit) {
                 PREFERENCE_VAL_ALTITUDE_METERS -> {
-                    geolocationDetailText += (location.mslAltitudeAccuracyMeters + 0.5).toInt().toString() + " " + getText(R.string.unit_meters)
+                    geolocationDetailText += (location.mslAltitudeAccuracyMeters + 0.5).toInt().toString() + " " + getText(R.string.unit_meter)
                 }
                 PREFERENCE_VAL_ALTITUDE_FEET -> {
                     geolocationDetailText += ((location.mslAltitudeAccuracyMeters / 0.3048 + 0.5).toInt().toString()) + " " + getText(R.string.unit_feet)
