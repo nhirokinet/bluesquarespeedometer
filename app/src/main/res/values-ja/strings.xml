@@ -26,9 +26,9 @@
 
     <string name="unit_km_per_hour">km/h</string>
     <string name="unit_knot">kn</string>
-    <string name="unit_meter_per_second">m/s</string>
     <string name="unit_mile_per_hour">mph</string>
     <string name="unit_meter">m</string>
+    <string name="unit_meter_per_second">m/s</string>
     <string name="unit_meter_per_minute">m/分</string>
     <string name="unit_feet">ft</string>
     <string name="unit_feet_per_minute">ft/分</string>
