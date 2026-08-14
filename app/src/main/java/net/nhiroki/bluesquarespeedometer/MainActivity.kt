@@ -25,6 +25,7 @@ import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.os.ConfigurationCompat
 import androidx.core.view.OnApplyWindowInsetsListener
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -32,6 +33,7 @@ import net.nhiroki.bluesquarespeedometer.viewers.DigitalSpeedometer1Activity
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
+import kotlin.time.TimeSource
 
 
 class MainActivity : AppCompatActivity() {
@@ -97,6 +99,8 @@ class MainActivity : AppCompatActivity() {
 
     var _sensorManager:SensorManager? = null
     var _sensorEventListener: SensorEventListener? = null
+
+    private val _pressureAltitudeHistory = ArrayDeque<Pair<TimeSource.Monotonic.ValueTimeMark, Double>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -176,6 +180,8 @@ class MainActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.main_activity_permission_status_textview).setText(if (coarseLocationPermission) {R.string.permission_location_coarse} else {R.string.permission_location_no});
         }
 
+        this._pressureAltitudeHistory.clear()
+
         val pressureSensorList = this._sensorManager!!.getSensorList(Sensor.TYPE_PRESSURE)
         if (pressureSensorList.size > 0) {
             findViewById<View>(R.id.main_activity_pressure_area).visibility = View.VISIBLE
@@ -237,8 +243,8 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.main_activity_config_air_pressure_unit_textview).setText(pressureUnitName)
         findViewById<TextView>(R.id.main_activity_pressure_unit_textview).setText(pressureUnitName)
 
-        findViewById<TextView>(R.id.main_activity_pressure_altitude_digits_textview).setText("-")
-        findViewById<TextView>(R.id.main_activity_pressure_altitude_unit_textview).setText(altitudeUnitName)
+        displayPressureAltitude(Double.NaN)
+        displayPressureAltitudeSpeed(Double.NaN)
 
         findViewById<TextView>(R.id.main_activity_pressure_sea_level_digits_textview).setText("-")
         findViewById<TextView>(R.id.main_activity_pressure_sea_level_unit_textview).setText(pressureUnitName)
@@ -367,7 +373,6 @@ class MainActivity : AppCompatActivity() {
             dialog.cancel()
             this.updateOptionsShown()
         }).create().show()
-
     }
 
     private fun degreeToDisplayText(degree:Double, positiveAsix:String, negativeAxis:String): String {
@@ -394,6 +399,70 @@ class MainActivity : AppCompatActivity() {
         return axisText + getText(R.string.unit_angle_deg).toString().format(degInt, degMinInt, degSecInt, degSubSecInt)
     }
 
+    private fun calculateLinearRegressionSlope(
+        samples: Collection<Pair<TimeSource.Monotonic.ValueTimeMark, Double>>,
+    ): Double {
+        // https://ja.wikipedia.org/wiki/%E7%B7%9A%E5%BD%A2%E5%9B%9E%E5%B8%B0
+        if (samples.size < 2) {
+            return 0.0
+        }
+
+        val originTimeMark = samples.first().first
+
+        val points: List<Pair<Double, Double>> = samples.map { (time, height) ->
+            val elapsedSeconds =
+                (time - originTimeMark).inWholeNanoseconds / 1_000_000_000.0
+
+            elapsedSeconds to height
+        }
+
+        val meanTime =
+            points.map { it.first }.average()
+
+        val meanHeight =
+            points.map { it.second }.average()
+
+        var numerator = 0.0
+        var denominator = 0.0
+
+        for ((time, height) in points) {
+            val timeDeviation = time - meanTime
+            val heightDeviation = height - meanHeight
+
+            numerator += timeDeviation * heightDeviation
+            denominator += timeDeviation * timeDeviation
+        }
+
+        if (denominator == 0.0) {
+            return 0.0
+        }
+
+        return numerator / denominator
+    }
+
+    private fun displayPressureAltitude(pressureAltitudeM: Double) {
+        val altitudeUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_KEY_ALTITUDE_UNIT, PREFERENCE_VAL_ALTITUDE_DEFAULT)!!
+        when(altitudeUnit) {
+            PREFERENCE_VAL_ALTITUDE_METERS -> {
+                if(pressureAltitudeM.isNaN()) {
+                    findViewById<TextView>(R.id.main_activity_pressure_altitude_digits_textview).setText("      -")
+                } else {
+                    findViewById<TextView>(R.id.main_activity_pressure_altitude_digits_textview).setText(String.format("%7.1f", pressureAltitudeM))
+                }
+                findViewById<TextView>(R.id.main_activity_pressure_altitude_unit_textview).setText(R.string.unit_meters)
+            }
+            PREFERENCE_VAL_ALTITUDE_FEET -> {
+                if(pressureAltitudeM.isNaN()) {
+                    findViewById<TextView>(R.id.main_activity_pressure_altitude_digits_textview).setText("     -")
+                } else {
+                    findViewById<TextView>(R.id.main_activity_pressure_altitude_digits_textview).setText(String.format("%6.0f", (pressureAltitudeM / 0.3048)))
+                }
+                findViewById<TextView>(R.id.main_activity_pressure_altitude_unit_textview).setText(R.string.unit_feet)
+            }
+        }
+
+    }
+
     /*
      * inHg conversion
      *
@@ -409,6 +478,8 @@ class MainActivity : AppCompatActivity() {
      *   As long as displaying just 5 digits (like 29.921 inHg), further precision is not a problem. Using 3386.389.
      */
     fun updatePressure(pressure_hPa: Float) {
+        val nowTimeMark: TimeSource.Monotonic.ValueTimeMark = TimeSource.Monotonic.markNow()
+
         val pressureUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_KEY_AIR_PRESSURE_UNIT, PREFERENCE_VAL_AIR_PRESSURE_DEFAULT)!!
         when(pressureUnit) {
             PREFERENCE_VAL_AIR_PRESSURE_HPA -> {
@@ -422,25 +493,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val pressureAltitude:Double = ISAPressureAltitude.pressureHpaToAltitudeM(pressure_hPa.toDouble())
-        val altitudeUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_KEY_ALTITUDE_UNIT, PREFERENCE_VAL_ALTITUDE_DEFAULT)!!
-        when(altitudeUnit) {
-            PREFERENCE_VAL_ALTITUDE_METERS -> {
-                if(pressureAltitude.isNaN()) {
-                    findViewById<TextView>(R.id.main_activity_pressure_altitude_digits_textview).setText("-")
-                } else {
-                    findViewById<TextView>(R.id.main_activity_pressure_altitude_digits_textview).setText(String.format("%.1f", pressureAltitude))
-                }
-                findViewById<TextView>(R.id.main_activity_pressure_altitude_unit_textview).setText(R.string.unit_meters)
-            }
-            PREFERENCE_VAL_ALTITUDE_FEET -> {
-                if(pressureAltitude.isNaN()) {
-                    findViewById<TextView>(R.id.main_activity_pressure_altitude_digits_textview).setText("-")
-                } else {
-                    findViewById<TextView>(R.id.main_activity_pressure_altitude_digits_textview).setText((pressureAltitude / 0.3048).toInt().toString())
-                }
-                findViewById<TextView>(R.id.main_activity_pressure_altitude_unit_textview).setText(R.string.unit_feet)
-            }
-        }
+        this.displayPressureAltitude(pressureAltitude)
 
         var pressureSeaLevel:Double = Double.NaN
         if (! this._displayedHeightM.isNaN()) {
@@ -469,6 +522,64 @@ class MainActivity : AppCompatActivity() {
                 PREFERENCE_VAL_AIR_PRESSURE_INHG -> {
                     findViewById<TextView>(R.id.main_activity_pressure_sea_level_unit_textview).setText(R.string.unit_inhg)
                 }
+            }
+        }
+
+        while (_pressureAltitudeHistory.size > 5) {
+            _pressureAltitudeHistory.removeFirst()
+        }
+        _pressureAltitudeHistory.add(nowTimeMark to pressureAltitude)
+
+        if (_pressureAltitudeHistory.size >= 6) {
+            val speedMPerMin:Double = calculateLinearRegressionSlope(_pressureAltitudeHistory) * 60.0
+            displayPressureAltitudeSpeed(speedMPerMin)
+
+        } else {
+            displayPressureAltitudeSpeed(Double.NaN)
+        }
+    }
+
+    private fun displayPressureAltitudeSpeed(altitudeSpeedMPerMin: Double) {
+        val altitudeUnit:Int = PreferenceManager.getDefaultSharedPreferences(this).getInt(PREFERENCE_KEY_ALTITUDE_UNIT, PREFERENCE_VAL_ALTITUDE_DEFAULT)!!
+
+        when(altitudeUnit) {
+            PREFERENCE_VAL_ALTITUDE_METERS -> {
+                if (altitudeSpeedMPerMin.isNaN()) {
+                    findViewById<TextView>(R.id.main_activity_pressure_altitude_speed_digits_textview).setText("    -")
+                } else {
+                    val valToShow = Math.floor(altitudeSpeedMPerMin + 0.5).toInt()
+                    val valToShowAbs:Int = Math.abs(valToShow)
+                    var valToShowSign:String = " "
+                    if (valToShow > 0) {
+                        valToShowSign = "+"
+                    }
+                    if (valToShow < 0) {
+                        valToShowSign = "-"
+                    }
+                    findViewById<TextView>(R.id.main_activity_pressure_altitude_speed_digits_textview).setText(
+                        String.format( ConfigurationCompat.getLocales(resources.configuration)[0], "%s%4d", valToShowSign, valToShowAbs)
+                    )
+                }
+                findViewById<TextView>(R.id.main_activity_pressure_altitude_speed_unit_textview).setText(R.string.unit_meters_per_minute)
+            }
+            PREFERENCE_VAL_ALTITUDE_FEET -> {
+                if (altitudeSpeedMPerMin.isNaN()) {
+                    findViewById<TextView>(R.id.main_activity_pressure_altitude_speed_digits_textview).setText("    -")
+                } else {
+                    val valToShow = Math.floor(altitudeSpeedMPerMin / 0.3048 + 0.5).toInt()
+                    val valToShowAbs:Int = Math.abs(valToShow)
+                    var valToShowSign:String = " "
+                    if (valToShow > 0) {
+                        valToShowSign = "+"
+                    }
+                    if (valToShow < 0) {
+                        valToShowSign = "-"
+                    }
+                    findViewById<TextView>(R.id.main_activity_pressure_altitude_speed_digits_textview).setText(
+                        String.format( ConfigurationCompat.getLocales(resources.configuration)[0], "%s%4d", valToShowSign, valToShowAbs)
+                    )
+                }
+                findViewById<TextView>(R.id.main_activity_pressure_altitude_speed_unit_textview).setText(R.string.unit_feet_per_minute)
             }
         }
     }
