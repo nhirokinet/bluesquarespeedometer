@@ -525,12 +525,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        while (_pressureAltitudeHistory.size > 5) {
+        while (_pressureAltitudeHistory.size > 12) {
             _pressureAltitudeHistory.removeFirst()
         }
         _pressureAltitudeHistory.add(nowTimeMark to pressureAltitude)
 
-        if (_pressureAltitudeHistory.size >= 6) {
+        if (_pressureAltitudeHistory.size >= 13) {
             val speedMPerMin:Double = calculateLinearRegressionSlope(_pressureAltitudeHistory) * 60.0
             displayPressureAltitudeSpeed(speedMPerMin)
 
