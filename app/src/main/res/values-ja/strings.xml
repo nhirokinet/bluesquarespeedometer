@@ -21,7 +21,7 @@
     <string name="metrics_msl_altitude_accuracy">平均海面高度精度</string>
     <string name="metrics_info_time">時刻情報</string>
     <string name="metrics_barometric_pressure">気圧</string>
-    <string name="metrics_pressure_altitude_qne">気圧高度 (QNE)</string>
+    <string name="metrics_pressure_altitude_qne">気圧高度（QNE）</string>
     <string name="metrics_pressure_sea_level">海面更正気圧</string>
 
     <string name="unit_km_per_hour">km/h</string>
@@ -29,9 +29,7 @@
     <string name="unit_mile_per_hour">mph</string>
     <string name="unit_meter">m</string>
     <string name="unit_meter_per_second">m/s</string>
-    <string name="unit_meter_per_minute">m/分</string>
     <string name="unit_feet">ft</string>
-    <string name="unit_feet_per_minute">ft/分</string>
     <string name="unit_angle_deg">%1$d°%2$02d\'%3$02d.%4$01d\"</string>
     <string name="unit_hpa">hPa</string>
     <string name="unit_inhg">inHg</string>
