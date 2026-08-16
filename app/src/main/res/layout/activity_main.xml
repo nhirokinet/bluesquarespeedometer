@@ -177,7 +177,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/metrics_pressure_altitude_qne"
-                        android:layout_gravity="start"
+                        android:layout_gravity="end"
                         />
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -200,23 +200,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="12sp"
-                            android:paddingEnd="10sp"
-                            />
-                        <TextView
-                            android:id="@+id/main_activity_pressure_altitude_speed_digits_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="20sp"
-                            android:gravity="right"
-                            android:fontFamily="monospace"
-                            android:textColor="?baseTextColor"
-                            android:paddingEnd="10sp"
-                            />
-                        <TextView
-                            android:id="@+id/main_activity_pressure_altitude_speed_unit_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="12sp"
                             />
                     </LinearLayout>
                 </LinearLayout>
@@ -225,13 +208,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_gravity="end"
-                    android:paddingStart="20sp"
                     >
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/metrics_pressure_sea_level"
-                        android:layout_gravity="start"
+                        android:layout_gravity="end"
                         />
                     <LinearLayout
                         android:layout_width="wrap_content"
