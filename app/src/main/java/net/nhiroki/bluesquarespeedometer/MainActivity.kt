@@ -181,7 +181,7 @@ class MainActivity : AppCompatActivity() {
             findViewById<View>(R.id.main_activity_pressure_area).visibility = View.VISIBLE
             findViewById<View>(R.id.main_activity_config_air_pressure_area).visibility = View.VISIBLE
             for (sensor in pressureSensorList) {
-                this._sensorManager!!.registerListener(this._sensorEventListener, sensor, 250000)
+                this._sensorManager!!.registerListener(this._sensorEventListener, sensor, 500000)
             }
 
         } else {
