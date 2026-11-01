@@ -68,6 +68,8 @@
         \n- Kotlin Stdlib
         \n- Coroutines support libraries for Kotlin
         \n- kotlinx-coroutines-android
+        \n- kotlinx-serialization-core
+        \n- kotlinx-serialization-bom
         \n- Google Guava
         \n- JSpecify
     </string>

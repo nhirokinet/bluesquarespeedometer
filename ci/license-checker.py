@@ -63,6 +63,9 @@ def main():
 
             if not package_fullname.startswith('androidx.')\
                     and package_name != 'kotlinx-coroutines-android'\
+                    and package_name != 'kotlinx-serialization-core'\
+                    and package_name != 'kotlinx-serialization-core-jvm'\
+                    and package_name != 'kotlinx-serialization-bom'\
                     and not package_name.startswith('kotlin-stdlib')\
                     and not package_name.startswith('kotlin-coroutines')\
                     and not package_name.startswith('kotlinx-coroutines')\
